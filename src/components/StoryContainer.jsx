@@ -77,17 +77,34 @@ export default function StoryContainer({ storiesData }) {
         }
     }, [index, stories, hasSeenHint, hasSeenSwipeHint]);
 
-    const prev = () => {
-        if (index > 0) {
-            setDirection(-1);
-            setIndex(index - 1);
-        }
-    };
+    const prev = useCallback(() => {
+        setIndex(curr => {
+            if (curr > 0) {
+                setDirection(-1);
+                return curr - 1;
+            }
+            return curr;
+        });
+    }, []);
 
     const restart = () => {
         setDirection(-1);
         setIndex(0);
     };
+
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                next();
+            } else if (e.key === 'ArrowLeft') {
+                prev();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [next, prev]);
 
     if (loading) {
         return (
@@ -137,13 +154,25 @@ export default function StoryContainer({ storiesData }) {
             <ImagePreloader stories={stories} />
             {/* Progress Bars */}
             <div className="absolute top-4 left-4 right-4 z-50 flex gap-1.5 px-2">
-                {stories.map((_, i) => (
-                    <div key={i} className="h-1 flex-1 bg-black/10 rounded-full overflow-hidden">
-                        <div
-                            className={`h-full bg-black/40 transition-all duration-300 ${i === index ? 'w-full' : i < index ? 'w-full' : 'w-0'}`}
-                        />
-                    </div>
-                ))}
+                {stories.map((story, i) => {
+                    const isCurrent = i === index;
+                    const isPast = i < index;
+                    const duration = (story.type === 'photo-grid' || story.type === 'summary') ? 10 : 5;
+
+                    return (
+                        <div key={i} className="h-1 flex-1 bg-black/10 rounded-full overflow-hidden relative">
+                            <motion.div
+                                className="h-full bg-black/40"
+                                initial={{ width: isPast ? '100%' : '0%' }}
+                                animate={{ width: isPast ? '100%' : (isCurrent ? '100%' : '0%') }}
+                                transition={{
+                                    duration: isCurrent ? duration : 0,
+                                    ease: "linear"
+                                }}
+                            />
+                        </div>
+                    );
+                })}
             </div>
 
             <AnimatePresence initial={false} custom={direction}>
@@ -343,7 +372,7 @@ function RenderStoryContent({ story, onRestart, onImageClick, showHint, onHintDi
                         }`}
                 >
                     <RotateCcw className="w-5 h-5" />
-                    Снова в 2024
+                    Посмотретьснова
                 </motion.button>
             </div>
         );

@@ -59,7 +59,7 @@ function SchemaHelp({ onClose }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
             <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl" onClick={e => e.stopPropagation()}>
                 <div className="p-6 border-b flex justify-between items-center bg-gray-50">
-                    <h2 className="text-xl font-bold font-display text-gray-800">Как заполнять JSON? 🤓</h2>
+                    <h2 className="text-xl font-bold font-display text-gray-800">Как заполнять JSON?</h2>
                     <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full text-gray-500">✕</button>
                 </div>
                 <div className="p-6 overflow-y-auto space-y-8 text-left">
@@ -194,7 +194,7 @@ export default function AdminPage() {
     };
 
     return (
-        <div className="min-h-screen w-full bg-pastel-cream p-4 md:p-8 font-body text-text-soft overflow-y-auto">
+        <div className="h-full w-full bg-pastel-cream p-4 md:p-8 font-body text-text-soft overflow-y-auto relative">
             <Snowfall />
             {showHelp && <SchemaHelp onClose={() => setShowHelp(false)} />}
 
@@ -249,7 +249,7 @@ export default function AdminPage() {
                     onClick={generateLink}
                     className="w-full py-5 bg-gradient-to-r from-accent-purple to-accent-blue text-white font-bold rounded-2xl shadow-lg shadow-accent-purple/20 text-xl tracking-wide hover:shadow-xl transition-all relative overflow-hidden"
                 >
-                    <span className="relative z-10">✨ Создать и Скопировать Ссылку 🔗</span>
+                    <span className="relative z-10">Создать и Скопировать Ссылку</span>
                     <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
                 </motion.button>
 
