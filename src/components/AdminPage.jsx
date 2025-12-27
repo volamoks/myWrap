@@ -206,7 +206,7 @@ export default function AdminPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                        <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Пин-код для входа 🔒</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Установи свой Пин-код для входа 🔒</label>
                         <input
                             type="text"
                             value={pin}
@@ -249,7 +249,7 @@ export default function AdminPage() {
                     onClick={generateLink}
                     className="w-full py-5 bg-gradient-to-r from-accent-purple to-accent-blue text-white font-bold rounded-2xl shadow-lg shadow-accent-purple/20 text-xl tracking-wide hover:shadow-xl transition-all relative overflow-hidden"
                 >
-                    <span className="relative z-10">Создать и Скопировать Ссылку</span>
+                    <span className="relative z-10">Создай Ссылку и отправь ее </span>
                     <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
                 </motion.button>
 
@@ -262,7 +262,7 @@ export default function AdminPage() {
                         <div className="bg-green-50 border border-green-200 p-4 rounded-2xl flex items-center gap-4">
                             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-xl">✅</div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-green-800">Ссылка готова!</p>
+                                <p className="text-sm font-bold text-green-800">Ссылка готова! Можно отправлять</p>
                                 <p className="text-xs text-green-600 truncate">{generatedLink}</p>
                             </div>
                             <button onClick={copyToClipboard} className="text-xs font-bold bg-white px-3 py-2 rounded-lg border border-green-200 shadow-sm text-green-700 hover:bg-green-50">
