@@ -14,7 +14,7 @@ const Snowfall = () => {
         canvas.height = height;
 
         const snowflakes = [];
-        const snowflakeCount = 100; // Increased count
+        const snowflakeCount = 250; // Denser snow!
 
         class Snowflake {
             constructor() {

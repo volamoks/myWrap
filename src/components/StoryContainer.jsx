@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, RotateCcw, Loader2 } from 'lucide-react';
 import Snowfall from './Snowfall';
@@ -7,6 +7,9 @@ import ImageModal from './ImageModal';
 import InteractionHint from './InteractionHint';
 import SwipeHint from './SwipeHint';
 import ImagePreloader from './ImagePreloader';
+import HeartReaction from './HeartReaction';
+import Fireworks from './Fireworks';
+
 
 export default function StoryContainer({ storiesData }) {
     const [index, setIndex] = useState(0);
@@ -17,6 +20,24 @@ export default function StoryContainer({ storiesData }) {
     const [stories, setStories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Auto-scroll effect
+    useEffect(() => {
+        if (loading || !stories.length || selectedImage || index >= stories.length - 1) return;
+
+        const currentStory = stories[index];
+        // Longer duration for grids and text-heavy slides
+        const duration = (currentStory.type === 'photo-grid' || currentStory.type === 'summary')
+            ? 10000
+            : 5000;
+
+        const timer = setTimeout(() => {
+            setDirection(1);
+            setIndex(prev => prev + 1);
+        }, duration);
+
+        return () => clearTimeout(timer);
+    }, [index, stories, loading, selectedImage]);
 
     useEffect(() => {
         if (storiesData) {
@@ -41,12 +62,12 @@ export default function StoryContainer({ storiesData }) {
             });
     }, []);
 
-    const next = () => {
+    const next = useCallback(() => {
         if (!stories.length) return;
 
         if (index < stories.length - 1) {
             setDirection(1);
-            setIndex(index + 1);
+            setIndex(prev => prev + 1);
             if (stories[index + 1].type === 'photo-grid' && !hasSeenHint) {
                 // Hint logic handled in RenderStoryContent via prop
             }
@@ -54,7 +75,7 @@ export default function StoryContainer({ storiesData }) {
                 setTimeout(() => setHasSeenSwipeHint(true), 1000);
             }
         }
-    };
+    }, [index, stories, hasSeenHint, hasSeenSwipeHint]);
 
     const prev = () => {
         if (index > 0) {
@@ -112,7 +133,7 @@ export default function StoryContainer({ storiesData }) {
     };
 
     return (
-        <div className="h-full w-full bg-pastel-cream overflow-hidden">
+        <div className="h-full w-full bg-pastel-cream overflow-hidden relative">
             <ImagePreloader stories={stories} />
             {/* Progress Bars */}
             <div className="absolute top-4 left-4 right-4 z-50 flex gap-1.5 px-2">
@@ -136,7 +157,7 @@ export default function StoryContainer({ storiesData }) {
                     transition={{
                         x: { type: "tween", ease: [0.32, 0.72, 0, 1], duration: 0.6 }, // Slightly faster, no opacity lag
                     }}
-                    className={`story-page ${story.theme === 'blue' ? 'gradient-bg-blue' :
+                    className={`story-page absolute inset-0 ${story.theme === 'blue' ? 'gradient-bg-blue' :
                         story.theme === 'green' ? 'gradient-bg-green' :
                             story.theme === 'yellow' ? 'gradient-bg-yellow' :
                                 story.theme === 'purple' ? 'gradient-bg-purple' :
@@ -144,12 +165,15 @@ export default function StoryContainer({ storiesData }) {
                         }`}
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.2} // Add a bit of resistance/feel
+                    style={{ touchAction: 'none' }} // CRITICAL for mobile
                     onDragEnd={(e, { offset, velocity }) => {
-                        const swipe = offset.x;
+                        const swipe = offset.x; // Drag distance
                         if (swipe < -50) next();
                         else if (swipe > 50) prev();
                     }}
                 >
+                    {story.type === 'summary' && <Fireworks />}
                     <Ornaments theme={story.theme} />
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
                         {/* Swipe Hint on Welcome Screen */}
@@ -171,10 +195,17 @@ export default function StoryContainer({ storiesData }) {
             </AnimatePresence>
 
             {/* Tap zones for desktop/fast nav */}
-            <div className="absolute inset-y-0 left-0 w-1/4 z-[60]" onClick={prev} />
-            <div className="absolute inset-y-0 right-0 w-1/4 z-[60]" onClick={next} />
+            <div className="hidden md:block absolute inset-y-0 left-0 w-1/4 z-[60]" onClick={prev} />
+            <div className="hidden md:block absolute inset-y-0 right-0 w-1/4 z-[60]" onClick={next} />
 
-            <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />
+            <HeartReaction />
+
+            <ImageModal
+                isOpen={!!selectedImage}
+                images={stories[index]?.type === 'photo-grid' ? stories[index].images : []}
+                initialIndex={selectedImage ? (stories[index]?.images?.indexOf(selectedImage) ?? 0) : 0}
+                onClose={() => setSelectedImage(null)}
+            />
         </div >
     );
 }

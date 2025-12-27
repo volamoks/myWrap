@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Lock } from 'lucide-react';
+import { Heart, Lock, Delete } from 'lucide-react';
 import Snowfall from './Snowfall';
 
 export default function PinScreen({ onUnlock, correctPin = '2024' }) {
@@ -8,6 +8,12 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
     const [error, setError] = useState(false);
 
     const handleKeyPress = (num) => {
+        if (num === 'delete') {
+            setPin(prev => prev.slice(0, -1));
+            setError(false);
+            return;
+        }
+
         if (pin.length < 4) {
             const newPin = pin + num;
             setPin(newPin);
@@ -55,14 +61,14 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                 </motion.div>
 
                 <div className="grid grid-cols-3 gap-6">
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, ''].map((num, i) => (
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, 'delete'].map((num, i) => (
                         num === '' ? <div key={i} /> : (
                             <button
                                 key={i}
                                 onClick={() => handleKeyPress(num)}
                                 className="w-16 h-16 rounded-full bg-white text-xl font-medium flex items-center justify-center active:bg-pastel-red transition-colors shadow-sm"
                             >
-                                {num}
+                                {num === 'delete' ? <Delete className="w-6 h-6 opacity-60" /> : num}
                             </button>
                         )
                     ))}
