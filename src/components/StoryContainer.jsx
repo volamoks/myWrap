@@ -204,7 +204,7 @@ export default function StoryContainer({ storiesData }) {
                 >
                     {story.type === 'summary' && <Fireworks />}
                     <Ornaments theme={story.theme} />
-                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pb-28">
                         {/* Swipe Hint on Welcome Screen */}
                         <SwipeHint
                             show={index === 0 && !hasSeenSwipeHint}
