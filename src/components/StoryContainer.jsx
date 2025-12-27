@@ -372,7 +372,7 @@ function RenderStoryContent({ story, onRestart, onImageClick, showHint, onHintDi
                         }`}
                 >
                     <RotateCcw className="w-5 h-5" />
-                    Посмотретьснова
+                    Посмотреть снова
                 </motion.button>
             </div>
         );
