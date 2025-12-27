@@ -204,7 +204,7 @@ export default function StoryContainer({ storiesData }) {
                 >
                     {story.type === 'summary' && <Fireworks />}
                     <Ornaments theme={story.theme} />
-                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pb-28">
+                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
                         {/* Swipe Hint on Welcome Screen */}
                         <SwipeHint
                             show={index === 0 && !hasSeenSwipeHint}
@@ -309,7 +309,9 @@ function RenderStoryContent({ story, onRestart, onImageClick, showHint, onHintDi
     if (story.type === 'photo-grid') {
         return (
             <div className="w-full flex flex-col items-center">
-                <h2 className="text-3xl font-display font-bold mb-8">{story.title}</h2>
+                <h2 className="text-3xl font-display font-bold mb-2">{story.title}</h2>
+                <p className="text-lg opacity-60 px-8 italic mb-8 text-center">{story.description}</p>
+
                 <div className="grid grid-cols-2 gap-4 w-full px-4 relative">
                     <InteractionHint show={showHint} onDismiss={onHintDismiss} />
                     {story.images.map((img, i) => (
@@ -332,7 +334,6 @@ function RenderStoryContent({ story, onRestart, onImageClick, showHint, onHintDi
                         </motion.div>
                     ))}
                 </div>
-                <p className="mt-12 text-center opacity-60 px-8 italic">{story.description}</p>
             </div>
         );
     }
