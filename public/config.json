@@ -1,0 +1,76 @@
+[
+    {
+        "id": "welcome",
+        "type": "welcome",
+        "title": "Привет!",
+        "subtitle": "Наш 2024 был особенным. Давай вспомним, как это было?",
+        "theme": "red"
+    },
+    {
+        "id": "dates",
+        "type": "stat",
+        "title": "Свидания",
+        "value": "42",
+        "description": "Столько раз мы выбирались куда-то вместе. И каждое было особенным ✨",
+        "theme": "blue"
+    },
+    {
+        "id": "talks",
+        "type": "stat",
+        "title": "Late Night Talks",
+        "value": "840+",
+        "description": "Часов в звонках и переписках до самого утра. Нам всегда есть о чем поговорить.",
+        "theme": "purple"
+    },
+    {
+        "id": "stickers",
+        "type": "stat",
+        "title": "Стикеры с котиками",
+        "value": "12,403",
+        "description": "Примерно столько милых котиков мы отправили друг другу. Это наш язык любви 🐈",
+        "theme": "green"
+    },
+    {
+        "id": "started",
+        "type": "photo-grid",
+        "title": "How it started...",
+        "description": "Первые общие фото и те самые моменты в начале.",
+        "images": [
+            "https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80"
+        ],
+        "theme": "red"
+    },
+    {
+        "id": "going",
+        "type": "photo-grid",
+        "title": "How it's going",
+        "description": "Мы всё такие же, только еще счастливее.",
+        "images": [
+            "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80"
+        ],
+        "theme": "yellow"
+    },
+    {
+        "id": "summary",
+        "type": "summary",
+        "title": "Наш Wrapped",
+        "stats": [
+            {
+                "label": "Свиданий",
+                "value": "42"
+            },
+            {
+                "label": "Звонков",
+                "value": "840ч"
+            },
+            {
+                "label": "Котиков",
+                "value": "12к+"
+            }
+        ],
+        "theme": "purple"
+    }
+]
