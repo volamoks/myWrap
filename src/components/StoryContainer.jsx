@@ -440,8 +440,7 @@ const SummaryStory = ({ story, onRestart }) => (
             animate={{ scale: 1, opacity: 1 }}
             className="mb-12"
         >
-            <h2 className="text-7xl mb-0 text-[#263238] leading-none"
-                style={{ fontFamily: '"Monoton", cursive' }}>
+            <h2 className="text-7xl font-black uppercase tracking-tight mb-0 text-[#263238] leading-none">
                 ИТОГИ
             </h2>
             <div className="h-1.5 w-24 bg-black mx-auto mt-4 rounded-full opacity-20"></div>
