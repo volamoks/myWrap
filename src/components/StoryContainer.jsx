@@ -8,6 +8,7 @@ import ImagePreloader from './ImagePreloader';
 import Fireworks from './Fireworks';
 import Number3D from './Number3D';
 import GraphicBackground from './GraphicBackground';
+import AnimatedNumber from './AnimatedNumber';
 
 export default function StoryContainer({ storiesData }) {
     const [index, setIndex] = useState(0);
@@ -230,14 +231,16 @@ function RenderStoryContent(props) {
 
 const WelcomeStory = ({ story }) => (
     <div className="text-center mt-[-10vh]">
-        <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8"
-        >
-            <div className="text-8xl mb-4">🎄</div>
-        </motion.div>
+        {story.icon && (
+            <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mb-8"
+            >
+                <div className="text-8xl mb-4">{story.icon}</div>
+            </motion.div>
+        )}
         <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -399,12 +402,11 @@ const ListStory = ({ story }) => (
                     <span className="text-xs font-black uppercase tracking-[0.3em] opacity-40 mb-1 group-hover:opacity-100 transition-opacity">
                         {item.label}
                     </span>
-                    <span
+                    <AnimatedNumber
+                        value={item.value}
                         className="text-5xl leading-none text-[#263238]"
                         style={{ fontFamily: '"Monoton", cursive' }}
-                    >
-                        {item.value}
-                    </span>
+                    />
                 </motion.div>
             ))}
         </div>
@@ -428,7 +430,7 @@ const QuoteStory = ({ story, onRestart }) => (
 );
 
 const SummaryStory = ({ story, onRestart }) => (
-    <div className="w-full h-full flex flex-col items-center justify-center p-6 pb-20 relative text-center">
+    <div className="w-full h-full flex flex-col items-center justify-center p-6 relative text-center">
         <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -450,30 +452,16 @@ const SummaryStory = ({ story, onRestart }) => (
                     transition={{ delay: i * 0.15 + 0.3 }}
                     className="flex flex-col items-center"
                 >
-                    <span
+                    <AnimatedNumber
+                        value={s.value}
                         className="text-6xl leading-none text-[#263238]"
                         style={{ fontFamily: '"Monoton", cursive' }}
-                    >
-                        {s.value}
-                    </span>
-                    <span className="text-sm font-bold uppercase tracking-[0.2em] opacity-40 mt-2 font-sans">
+                    />
+                    <span className="text-sm font-bold uppercase tracking-[0.2em] opacity-40 mt-2">
                         {s.label}
                     </span>
                 </motion.div>
             ))}
         </div>
-
-        <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onRestart}
-            className="absolute bottom-12 bg-black text-white px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase shadow-xl hover:bg-gray-900 transition-all flex items-center gap-2"
-        >
-            <RotateCcw className="w-4 h-4" />
-            ПОВТОРИТЬ
-        </motion.button>
     </div>
 );

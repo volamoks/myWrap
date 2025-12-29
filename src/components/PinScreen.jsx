@@ -50,7 +50,7 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                             className={`
                                 w-48 py-2 text-center text-4xl font-bold tracking-[0.5em] 
                                 bg-transparent border-b-2 focus:outline-none 
-                                transition-all placeholder:text-black/10 font-mono
+                                transition-all placeholder:text-black/10
                                 ${error
                                     ? 'border-red-500 text-red-500'
                                     : 'border-black/30 focus:border-black text-black'

@@ -11,6 +11,7 @@ const SCHEMA_DOCS = [
   "type": "welcome",
   "title": "Привет!",
   "subtitle": "Текст под заголовком",
+  "icon": "❤️",
   "theme": "red"
 }`
     },

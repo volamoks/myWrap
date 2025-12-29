@@ -4,6 +4,7 @@
         "type": "welcome",
         "title": "2025",
         "subtitle": "Готова? Тогда листай",
+        "icon": "✨",
         "theme": "red",
         "duration": 5000
     },
