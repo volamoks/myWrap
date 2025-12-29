@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, RotateCcw, Loader2 } from 'lucide-react';
-import Snowfall from './Snowfall';
-import Ornaments from './Ornaments';
+import { RotateCcw, Loader2 } from 'lucide-react';
 import ImageModal from './ImageModal';
 import InteractionHint from './InteractionHint';
 import SwipeHint from './SwipeHint';
 import ImagePreloader from './ImagePreloader';
-import HeartReaction from './HeartReaction';
 import Fireworks from './Fireworks';
-
+import Number3D from './Number3D';
+import GraphicBackground from './GraphicBackground';
 
 export default function StoryContainer({ storiesData }) {
     const [index, setIndex] = useState(0);
@@ -20,24 +18,6 @@ export default function StoryContainer({ storiesData }) {
     const [stories, setStories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // Auto-scroll effect
-    useEffect(() => {
-        if (loading || !stories.length || selectedImage || index >= stories.length - 1) return;
-
-        const currentStory = stories[index];
-        // Longer duration for grids and text-heavy slides
-        const duration = (currentStory.type === 'photo-grid' || currentStory.type === 'summary')
-            ? 10000
-            : 5000;
-
-        const timer = setTimeout(() => {
-            setDirection(1);
-            setIndex(prev => prev + 1);
-        }, duration);
-
-        return () => clearTimeout(timer);
-    }, [index, stories, loading, selectedImage]);
 
     useEffect(() => {
         if (storiesData) {
@@ -110,7 +90,6 @@ export default function StoryContainer({ storiesData }) {
         return (
             <div className="h-full w-full flex items-center justify-center bg-pastel-cream">
                 <Loader2 className="animate-spin text-text-soft" size={48} />
-                <Snowfall />
             </div>
         );
     }
@@ -127,14 +106,14 @@ export default function StoryContainer({ storiesData }) {
     }
 
     const story = stories[index];
-    if (!story) return null; // Should not happen if loading is false and stories has data
+    if (!story) return null;
 
     const showHint = story.type === 'photo-grid' && !hasSeenHint;
 
     const variants = {
         enter: (direction) => ({
             x: direction > 0 ? '100%' : '-100%',
-            scale: 1, // Keep scale 1 to avoid gaps
+            scale: 1,
             zIndex: 1
         }),
         center: {
@@ -144,7 +123,7 @@ export default function StoryContainer({ storiesData }) {
         },
         exit: (direction) => ({
             x: direction < 0 ? '100%' : '-100%',
-            scale: 1, // Keep scale 1 to avoid gaps
+            scale: 1,
             zIndex: 0
         })
     };
@@ -152,23 +131,19 @@ export default function StoryContainer({ storiesData }) {
     return (
         <div className="h-full w-full bg-pastel-cream overflow-hidden relative">
             <ImagePreloader stories={stories} />
+
             {/* Progress Bars */}
             <div className="absolute top-4 left-4 right-4 z-50 flex gap-1.5 px-2">
                 {stories.map((story, i) => {
                     const isCurrent = i === index;
                     const isPast = i < index;
-                    const duration = (story.type === 'photo-grid' || story.type === 'summary') ? 10 : 5;
-
                     return (
                         <div key={i} className="h-1 flex-1 bg-black/10 rounded-full overflow-hidden relative">
                             <motion.div
                                 className="h-full bg-black/40"
                                 initial={{ width: isPast ? '100%' : '0%' }}
-                                animate={{ width: isPast ? '100%' : (isCurrent ? '100%' : '0%') }}
-                                transition={{
-                                    duration: isCurrent ? duration : 0,
-                                    ease: "linear"
-                                }}
+                                animate={{ width: isPast || isCurrent ? '100%' : '0%' }}
+                                transition={{ duration: 0.3 }}
                             />
                         </div>
                     );
@@ -184,7 +159,7 @@ export default function StoryContainer({ storiesData }) {
                     animate="center"
                     exit="exit"
                     transition={{
-                        x: { type: "tween", ease: [0.32, 0.72, 0, 1], duration: 0.6 }, // Slightly faster, no opacity lag
+                        x: { type: "tween", ease: [0.32, 0.72, 0, 1], duration: 0.6 },
                     }}
                     className={`story-page absolute inset-0 ${story.theme === 'blue' ? 'gradient-bg-blue' :
                         story.theme === 'green' ? 'gradient-bg-green' :
@@ -194,18 +169,18 @@ export default function StoryContainer({ storiesData }) {
                         }`}
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={0.2} // Add a bit of resistance/feel
-                    style={{ touchAction: 'none' }} // CRITICAL for mobile
+                    dragElastic={0.2}
+                    style={{ touchAction: 'none' }}
                     onDragEnd={(e, { offset, velocity }) => {
-                        const swipe = offset.x; // Drag distance
+                        const swipe = offset.x;
                         if (swipe < -50) next();
                         else if (swipe > 50) prev();
                     }}
                 >
                     {story.type === 'summary' && <Fireworks />}
-                    <Ornaments theme={story.theme} />
+                    <GraphicBackground theme={story.theme} variantKey={index} />
+
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-                        {/* Swipe Hint on Welcome Screen */}
                         <SwipeHint
                             show={index === 0 && !hasSeenSwipeHint}
                             direction="left"
@@ -214,6 +189,7 @@ export default function StoryContainer({ storiesData }) {
 
                         <RenderStoryContent
                             story={story}
+                            index={index}
                             onRestart={restart}
                             onImageClick={setSelectedImage}
                             showHint={showHint}
@@ -227,157 +203,277 @@ export default function StoryContainer({ storiesData }) {
             <div className="hidden md:block absolute inset-y-0 left-0 w-1/4 z-[60]" onClick={prev} />
             <div className="hidden md:block absolute inset-y-0 right-0 w-1/4 z-[60]" onClick={next} />
 
-            <HeartReaction />
-
             <ImageModal
                 isOpen={!!selectedImage}
                 images={stories[index]?.type === 'photo-grid' ? stories[index].images : []}
                 initialIndex={selectedImage ? (stories[index]?.images?.indexOf(selectedImage) ?? 0) : 0}
                 onClose={() => setSelectedImage(null)}
             />
-        </div >
+        </div>
     );
 }
 
-function RenderStoryContent({ story, onRestart, onImageClick, showHint, onHintDismiss }) {
-    if (story.type === 'welcome') {
-        return (
-            <div className="text-center mt-[-10vh]">
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="mb-8"
-                >
-                    <div className="text-8xl mb-4">🎄</div>
-                </motion.div>
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="text-5xl font-display font-bold text-text-soft mb-4 leading-tight"
-                >
-                    {story.title}
-                </motion.h1>
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7 }}
-                    className="text-lg opacity-70 px-8"
-                >
-                    {story.subtitle}
-                </motion.p>
-            </div>
-        );
-    }
+function RenderStoryContent(props) {
+    const { story } = props;
 
-    if (story.type === 'stat') {
-        return (
-            <div className="w-full max-w-sm">
-                <motion.h2
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="text-xl font-display uppercase tracking-widest opacity-40 mb-2"
-                >
-                    {story.title}
-                </motion.h2>
+    switch (story.type) {
+        case 'welcome': return <WelcomeStory {...props} />;
+        case 'stat': return <StatStory {...props} />;
+        case 'photo-grid': return <PhotoGridStory {...props} />;
+        case 'quiz': return <QuizStory {...props} />;
+        case 'list': return <ListStory {...props} />;
+        case 'quote': return <QuoteStory {...props} />;
+        case 'summary': return <SummaryStory {...props} />;
+        default: return null;
+    }
+}
+
+const WelcomeStory = ({ story }) => (
+    <div className="text-center mt-[-10vh]">
+        <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="mb-8"
+        >
+            <div className="text-8xl mb-4">🎄</div>
+        </motion.div>
+        <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-7xl font-black text-text-soft mb-6 leading-tight uppercase tracking-tight"
+        >
+            {story.title}
+        </motion.h1>
+        <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="text-lg opacity-70 px-8 font-medium"
+        >
+            {story.subtitle}
+        </motion.p>
+    </div>
+);
+
+const StatStory = ({ story, index }) => {
+    const alignments = ['items-start text-left', 'items-center text-center', 'items-end text-right'];
+    const alignmentClass = alignments[index ? index % 3 : 1];
+
+    return (
+        <div className={`w-full max-w-sm flex flex-col ${alignmentClass}`}>
+            <motion.h2
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-5xl font-black uppercase tracking-tight mb-6 leading-none text-[#263238]"
+            >
+                {story.title}
+            </motion.h2>
+            <motion.div
+                initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 20 }}
+                className="mb-6 relative z-10 w-full"
+            >
+                <div className={`flex ${(!index || index % 3 === 1) ? 'justify-center' : index % 3 === 0 ? 'justify-start' : 'justify-end'}`}>
+                    <Number3D value={story.value} theme={story.theme} />
+                </div>
+            </motion.div>
+            <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-2xl text-text-soft leading-relaxed font-medium max-w-[90%]"
+            >
+                {story.description}
+            </motion.p>
+        </div>
+    );
+};
+
+const PhotoGridStory = ({ story, onImageClick, showHint, onHintDismiss }) => (
+    <div className="w-full flex flex-col items-center">
+        <h2 className="text-5xl font-black mb-4 tracking-tight leading-none text-center">{story.title}</h2>
+        <p className="text-xl opacity-60 px-8 italic mb-8 text-center">{story.description}</p>
+
+        <div className="grid grid-cols-2 gap-4 w-full px-4 relative">
+            <InteractionHint show={showHint} onDismiss={onHintDismiss} />
+            {story.images.map((img, i) => (
                 <motion.div
+                    key={i}
+                    layoutId={img}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onImageClick(img);
+                        if (showHint) onHintDismiss();
+                    }}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, type: 'spring' }}
-                    className={`text-[120px] font-display font-black leading-none mb-6 ${story.theme === 'blue' ? 'text-accent-blue' :
-                        story.theme === 'green' ? 'text-accent-green' :
-                            story.theme === 'yellow' ? 'text-accent-yellow' :
-                                story.theme === 'purple' ? 'text-accent-purple' :
-                                    'text-accent-red'
-                        }`}
+                    whileHover={{ scale: 1.02, rotate: i % 2 === 0 ? 1 : -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ delay: i * 0.15, duration: 0.6, ease: "easeOut" }}
+                    className="aspect-[3/4] border-4 border-white shadow-[6px_6px_0px_rgba(38,50,56,0.2)] rounded-2xl cursor-zoom-in relative z-20 overflow-hidden bg-gray-100"
                 >
-                    {story.value}
+                    <img src={img} className="w-full h-full object-cover grayscale-[10%]" alt="Moment" />
                 </motion.div>
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="text-2xl text-text-soft leading-relaxed"
-                >
-                    {story.description}
-                </motion.p>
-            </div>
-        );
-    }
+            ))}
+        </div>
+    </div>
+);
 
-    if (story.type === 'photo-grid') {
-        return (
-            <div className="w-full flex flex-col items-center">
-                <h2 className="text-3xl font-display font-bold mb-2">{story.title}</h2>
-                <p className="text-lg opacity-60 px-8 italic mb-8 text-center">{story.description}</p>
+const QuizStory = ({ story }) => {
+    const [selected, setSelected] = useState(null);
 
-                <div className="grid grid-cols-2 gap-4 w-full px-4 relative">
-                    <InteractionHint show={showHint} onDismiss={onHintDismiss} />
-                    {story.images.map((img, i) => (
-                        <motion.div
+    return (
+        <div className="w-full max-w-sm flex flex-col items-center">
+            <h2 className="text-4xl font-black mb-10 text-center leading-[1.1] tracking-tight text-[#263238]">
+                {story.title}
+            </h2>
+            <div className="flex flex-col gap-5 w-full">
+                {story.options.map((opt, i) => {
+                    const isSelected = selected === i;
+                    const isRevealed = selected !== null;
+                    const isCorrect = opt.correct;
+
+                    let bgClass = 'bg-white';
+                    let textClass = 'text-black';
+                    let borderClass = 'border-black';
+
+                    if (isRevealed) {
+                        if (isSelected) {
+                            bgClass = isCorrect ? 'bg-[#00E054]' : 'bg-[#FF4646]';
+                            textClass = 'text-white';
+                            borderClass = isCorrect ? 'border-[#00E054]' : 'border-[#FF4646]';
+                        } else if (isCorrect) {
+                            bgClass = 'bg-[#00E054]';
+                            textClass = 'text-white';
+                            borderClass = 'border-[#00E054]';
+                        } else {
+                            bgClass = 'bg-gray-100';
+                            textClass = 'text-gray-400';
+                            borderClass = 'border-gray-200';
+                        }
+                    }
+
+                    return (
+                        <motion.button
                             key={i}
-                            layoutId={img}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onImageClick(img);
-                                if (showHint) onHintDismiss();
-                            }}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            transition={{ delay: i * 0.15, duration: 0.6, ease: "easeOut" }}
-                            className="aspect-[3/4] bg-white p-2 pb-8 shadow-xl rounded-sm cursor-zoom-in relative z-20"
+                            whileHover={!isRevealed ? { scale: 1.02, x: 2, y: -2 } : {}}
+                            whileTap={!isRevealed ? { scale: 0.98, x: 0, y: 0 } : {}}
+                            onClick={() => !isRevealed && setSelected(i)}
+                            className={`
+                                relative p-6 rounded-xl font-bold text-xl text-left border-2 
+                                shadow-[4px_4px_0px_0px_rgba(38,50,56,1)] transition-all
+                                flex items-center justify-between group
+                                ${bgClass} ${textClass} ${borderClass}
+                                ${isRevealed && !isSelected && 'shadow-none translate-y-1 translate-x-1'}
+                            `}
                         >
-                            <img src={img} className="w-full h-full object-cover grayscale-[20%]" alt="Moment" />
-                        </motion.div>
-                    ))}
-                </div>
+                            <span className="relative z-10 uppercase tracking-wide">{opt.text}</span>
+                            {isRevealed && isCorrect && <span className="text-2xl">✨</span>}
+                            {isRevealed && isSelected && !isCorrect && <span className="text-2xl">❌</span>}
+                        </motion.button>
+                    )
+                })}
             </div>
-        );
-    }
+        </div>
+    );
+};
 
-    if (story.type === 'summary') {
-        return (
-            <div className="w-full max-w-sm text-center">
-                <h2 className="text-4xl font-display font-bold mb-12">Наш Год ❤️</h2>
-                <div className="space-y-8 mb-16">
-                    {story.stats.map((s, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            className="flex items-center justify-between border-b border-black/5 pb-4"
-                        >
-                            <span className="text-xl opacity-60">{s.label}</span>
-                            <span className={`text-3xl font-bold font-display ${story.theme === 'blue' ? 'text-accent-blue' :
-                                story.theme === 'green' ? 'text-accent-green' :
-                                    story.theme === 'yellow' ? 'text-accent-yellow' :
-                                        story.theme === 'purple' ? 'text-accent-purple' :
-                                            'text-accent-red'
-                                }`}>{s.value}</span>
-                        </motion.div>
-                    ))}
-                </div>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={onRestart}
-                    className={`flex items-center gap-3 bg-white px-8 py-4 rounded-full shadow-lg font-bold mx-auto ${story.theme === 'blue' ? 'text-accent-blue' :
-                        story.theme === 'green' ? 'text-accent-green' :
-                            story.theme === 'yellow' ? 'text-accent-yellow' :
-                                story.theme === 'purple' ? 'text-accent-purple' :
-                                    'text-accent-red'
-                        }`}
+const ListStory = ({ story }) => (
+    <div className="w-full max-w-md flex flex-col items-center text-center">
+        <h2 className="text-5xl font-black mb-12 tracking-tight leading-none text-[#263238] uppercase">
+            {story.title}
+        </h2>
+
+        <div className="flex flex-col w-full gap-0">
+            {story.items.map((item, i) => (
+                <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.2 }}
+                    className="flex flex-col py-6 border-b border-black/10 last:border-none relative group"
                 >
-                    <RotateCcw className="w-5 h-5" />
-                    Посмотреть снова
-                </motion.button>
-            </div>
-        );
-    }
+                    <span className="text-xs font-black uppercase tracking-[0.3em] opacity-40 mb-1 group-hover:opacity-100 transition-opacity">
+                        {item.label}
+                    </span>
+                    <span
+                        className="text-5xl leading-none text-[#263238]"
+                        style={{ fontFamily: '"Monoton", cursive' }}
+                    >
+                        {item.value}
+                    </span>
+                </motion.div>
+            ))}
+        </div>
+    </div>
+);
 
-    return null;
-}
+const QuoteStory = ({ story, onRestart }) => (
+    <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 relative">
+        <h2 className="text-4xl font-black mb-6 leading-tight">{story.title}</h2>
+        <p className="text-2xl opacity-70 font-medium mb-16">{story.subtitle}</p>
+
+        <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onRestart}
+            className="px-10 py-4 bg-black text-white rounded-full font-bold text-lg uppercase tracking-widest shadow-xl flex items-center gap-2"
+        >
+            <RotateCcw className="w-5 h-5" /> REPLAY
+        </motion.button>
+    </div>
+);
+
+const SummaryStory = ({ story, onRestart }) => (
+    <div className="w-full h-full flex flex-col items-center justify-center p-6 pb-20 relative text-center">
+        <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="mb-12"
+        >
+            <h2 className="text-7xl mb-0 text-[#263238] leading-none"
+                style={{ fontFamily: '"Monoton", cursive' }}>
+                ИТОГИ
+            </h2>
+            <div className="h-1.5 w-24 bg-black mx-auto mt-4 rounded-full opacity-20"></div>
+        </motion.div>
+
+        <div className="flex flex-col gap-10 w-full max-w-xs relative z-10">
+            {story.stats.map((s, i) => (
+                <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.15 + 0.3 }}
+                    className="flex flex-col items-center"
+                >
+                    <span
+                        className="text-6xl leading-none text-[#263238]"
+                        style={{ fontFamily: '"Monoton", cursive' }}
+                    >
+                        {s.value}
+                    </span>
+                    <span className="text-sm font-bold uppercase tracking-[0.2em] opacity-40 mt-2 font-sans">
+                        {s.label}
+                    </span>
+                </motion.div>
+            ))}
+        </div>
+
+        <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onRestart}
+            className="absolute bottom-12 bg-black text-white px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase shadow-xl hover:bg-gray-900 transition-all flex items-center gap-2"
+        >
+            <RotateCcw className="w-4 h-4" />
+            ПОВТОРИТЬ
+        </motion.button>
+    </div>
+);

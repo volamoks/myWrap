@@ -46,7 +46,6 @@ function App() {
   // Viewer Mode
   return (
     <main className="fixed inset-0 overflow-hidden bg-pastel-cream">
-      <Snowfall />
       {!isUnlocked ? (
         <PinScreen
           correctPin={requiredPin || '2024'}

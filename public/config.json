@@ -1,75 +1,164 @@
 [
     {
-        "id": "welcome",
+        "id": 1,
         "type": "welcome",
-        "title": "Привет!",
-        "subtitle": "Наш 2024 был особенным. Давай вспомним, как это было?",
-        "theme": "red"
+        "title": "2025",
+        "subtitle": "Готова? Тогда листай",
+        "theme": "red",
+        "duration": 5000
     },
     {
-        "id": "dates",
+        "id": 2,
         "type": "stat",
-        "title": "Свидания",
+        "title": "1464",
+        "value": "1464",
+        "description": "Столько часов мы с тобой вместе. Поехали дальше",
+        "theme": "blue",
+        "duration": 6000
+    },
+    {
+        "id": 3,
+        "type": "stat",
+        "title": "Мы сходили на",
         "value": "42",
-        "description": "Столько раз мы выбирались куда-то вместе. И каждое было особенным ✨",
-        "theme": "blue"
+        "description": "Свиданий. Ещё больше ждут нас впереди",
+        "theme": "green",
+        "duration": 6000
     },
     {
-        "id": "talks",
-        "type": "stat",
-        "title": "Late Night Talks",
-        "value": "840+",
-        "description": "Часов в звонках и переписках до самого утра. Нам всегда есть о чем поговорить.",
-        "theme": "purple"
+        "id": 4,
+        "type": "quiz",
+        "title": "У нас было очень много стикеров с котиками. Угадаешь, сколько?",
+        "options": [
+            {
+                "text": "150",
+                "correct": false
+            },
+            {
+                "text": "342",
+                "correct": true
+            },
+            {
+                "text": "89",
+                "correct": false
+            }
+        ],
+        "theme": "yellow",
+        "duration": 10000
     },
     {
-        "id": "stickers",
-        "type": "stat",
-        "title": "Стикеры с котиками",
-        "value": "12,403",
-        "description": "Примерно столько милых котиков мы отправили друг другу. Это наш язык любви 🐈",
-        "theme": "green"
+        "id": 5,
+        "type": "list",
+        "title": "Наши моменты",
+        "items": [
+            {
+                "label": "Поездок загород",
+                "value": "12"
+            },
+            {
+                "label": "Фильмов",
+                "value": "48"
+            },
+            {
+                "label": "Спетых песен",
+                "value": "156"
+            }
+        ],
+        "theme": "purple",
+        "duration": 8000
     },
     {
-        "id": "started",
+        "id": 6,
+        "type": "quiz",
+        "title": "Самая частая фраза. Угадаешь?",
+        "options": [
+            {
+                "text": "Я тебя люблю",
+                "correct": false
+            },
+            {
+                "text": "Что будем есть?",
+                "correct": true
+            },
+            {
+                "text": "Где ключи?",
+                "correct": false
+            }
+        ],
+        "theme": "red",
+        "duration": 10000
+    },
+    {
+        "id": 7,
         "type": "photo-grid",
         "title": "How it started...",
-        "description": "Первые общие фото и те самые моменты в начале.",
+        "description": "Первые шаги",
         "images": [
-            "https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&w=400&q=80",
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80"
+            "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop"
         ],
-        "theme": "red"
+        "theme": "blue",
+        "duration": 7000
     },
     {
-        "id": "going",
+        "id": 8,
         "type": "photo-grid",
-        "title": "How it's going",
-        "description": "Мы всё такие же, только еще счастливее.",
+        "title": "How it's going...",
+        "description": "И это только начало",
         "images": [
-            "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=400&q=80",
-            "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80"
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1523307730650-5945347f3911?w=800&auto=format&fit=crop"
         ],
-        "theme": "yellow"
+        "theme": "green",
+        "duration": 7000
     },
     {
-        "id": "summary",
+        "id": 9,
+        "type": "list",
+        "title": "Top Vibes",
+        "items": [
+            {
+                "label": "Late night talks",
+                "value": "∞"
+            },
+            {
+                "label": "Top share moment",
+                "value": "quiet walks"
+            },
+            {
+                "label": "Our top activity",
+                "value": "holding hands"
+            }
+        ],
+        "theme": "purple",
+        "duration": 8000
+    },
+    {
+        "id": 10,
         "type": "summary",
-        "title": "Наш Wrapped",
         "stats": [
             {
                 "label": "Свиданий",
                 "value": "42"
             },
             {
-                "label": "Звонков",
-                "value": "840ч"
+                "label": "Часов вместе",
+                "value": "1464"
             },
             {
                 "label": "Котиков",
-                "value": "12к+"
+                "value": "342"
             }
         ],
-        "theme": "purple"
+        "theme": "yellow",
+        "duration": 10000
+    },
+    {
+        "id": 11,
+        "type": "quote",
+        "title": "I don’t know what 2026 will bring.",
+        "subtitle": "But I like the idea of discovering it with you.",
+        "theme": "black",
+        "duration": 10000
     }
 ]

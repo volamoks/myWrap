@@ -26,6 +26,32 @@ const SCHEMA_DOCS = [
 }`
     },
     {
+        type: "quiz",
+        desc: "Викторина с вариантами",
+        example: `{
+  "type": "quiz",
+  "title": "Вопрос?",
+  "options": [
+    { "text": "Да", "correct": true },
+    { "text": "Нет", "correct": false }
+  ],
+  "theme": "yellow"
+}`
+    },
+    {
+        type: "list",
+        desc: "Список фактов",
+        example: `{
+  "type": "list",
+  "title": "Наши топы",
+  "items": [
+    { "label": "Еда", "value": "Пицца" },
+    { "label": "Фильм", "value": "Дюна" }
+  ],
+  "theme": "purple"
+}`
+    },
+    {
         type: "photo-grid",
         desc: "Сетка фотографий (2-3 фото)",
         example: `{
@@ -37,6 +63,16 @@ const SCHEMA_DOCS = [
     "ссылка_на_фото_2"
   ],
   "theme": "yellow"
+}`
+    },
+    {
+        type: "quote",
+        desc: "Цитата с кнопкой Replay",
+        example: `{
+  "type": "quote",
+  "title": "Заголовок",
+  "subtitle": "Подпись",
+  "theme": "black"
 }`
     },
     {
@@ -83,80 +119,22 @@ function SchemaHelp({ onClose }) {
     );
 }
 
-const DEFAULT_CONFIG = [
-    {
-        id: 'welcome',
-        type: 'welcome',
-        title: 'Привет!',
-        subtitle: 'Наш 2024 был особенным. Давай вспомним, как это было?',
-        theme: 'red',
-    },
-    {
-        id: 'dates',
-        type: 'stat',
-        title: 'Свидания',
-        value: '42',
-        description: 'Столько раз мы выбирались куда-то вместе. И каждое было особенным ✨',
-        theme: 'blue',
-    },
-    {
-        id: 'talks',
-        type: 'stat',
-        title: 'Late Night Talks',
-        value: '840+',
-        description: 'Часов в звонках и переписках до самого утра. Нам всегда есть о чем поговорить.',
-        theme: 'purple',
-    },
-    {
-        id: 'stickers',
-        type: 'stat',
-        title: 'Стикеры с котиками',
-        value: '12,403',
-        description: 'Примерно столько милых котиков мы отправили друг другу. Это наш язык любви 🐈',
-        theme: 'green',
-    },
-    {
-        id: 'started',
-        type: 'photo-grid',
-        title: 'How it started...',
-        description: 'Первые общие фото и те самые моменты в начале.',
-        images: [
-            'https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&w=400&q=80',
-            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
-            'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80'
-        ],
-        theme: 'red',
-    },
-    {
-        id: 'going',
-        type: 'photo-grid',
-        title: 'How it\'s going',
-        description: 'Мы всё такие же, только еще счастливее.',
-        images: [
-            'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=400&q=80',
-            'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80'
-        ],
-        theme: 'yellow',
-    },
-    {
-        id: 'summary',
-        type: 'summary',
-        title: 'Наш Wrapped',
-        stats: [
-            { label: 'Свиданий', value: '42' },
-            { label: 'Звонков', value: '840ч' },
-            { label: 'Котиков', value: '12к+' },
-        ],
-        theme: 'purple',
-    }
-];
-
 export default function AdminPage() {
-    const [jsonInput, setJsonInput] = useState(JSON.stringify(DEFAULT_CONFIG, null, 4));
+    const [jsonInput, setJsonInput] = useState('// Загрузка актуального шаблона...');
     const [pin, setPin] = useState('2024');
     const [generatedLink, setGeneratedLink] = useState('');
     const [error, setError] = useState('');
     const [showHelp, setShowHelp] = useState(false);
+
+    React.useEffect(() => {
+        fetch('/config.json')
+            .then(res => res.json())
+            .then(data => setJsonInput(JSON.stringify(data, null, 4)))
+            .catch(err => {
+                console.error("Config fetch error:", err);
+                setJsonInput('[]');
+            });
+    }, []);
 
     const generateLink = () => {
         try {
