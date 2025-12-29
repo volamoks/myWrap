@@ -60,16 +60,16 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                         />
                     </motion.div>
 
-                    {/* Right: Stacked Text - Massive */}
+                    {/* Right: Stacked Text - Massive & Fluid */}
                     <div className="flex flex-col items-start relative z-10">
-                        <span className="text-xl font-bold tracking-[0.4em] opacity-50 text-[#263238] uppercase mb-4 ml-2">
+                        <span className="text-xl font-bold tracking-[0.4em] opacity-50 text-[#263238] uppercase mb-1 md:mb-4 ml-2">
                             НАШ
                         </span>
-                        <h1 className="text-[10rem] font-normal text-[#0288D1] leading-[0.8] select-none"
+                        <h1 className="text-[clamp(6rem,25vw,12rem)] font-normal text-[#0288D1] leading-[0.8] select-none"
                             style={{ fontFamily: '"Monoton", cursive' }}>
                             <ScrambleText>20</ScrambleText>
                         </h1>
-                        <h1 className="text-[10rem] font-normal text-[#0288D1] leading-[0.8] select-none"
+                        <h1 className="text-[clamp(6rem,25vw,12rem)] font-normal text-[#0288D1] leading-[0.8] select-none"
                             style={{ fontFamily: '"Monoton", cursive' }}>
                             <ScrambleText>25</ScrambleText>
                         </h1>

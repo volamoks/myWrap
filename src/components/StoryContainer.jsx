@@ -20,6 +20,12 @@ export default function StoryContainer({ storiesData }) {
     const [stories, setStories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showFireworks, setShowFireworks] = useState(false);
+
+    const triggerFireworks = () => {
+        setShowFireworks(true);
+        setTimeout(() => setShowFireworks(false), 3000);
+    };
 
     useEffect(() => {
         if (storiesData) {
@@ -179,7 +185,7 @@ export default function StoryContainer({ storiesData }) {
                         else if (swipe > 50) prev();
                     }}
                 >
-                    {story.type === 'summary' && <Fireworks />}
+                    {showFireworks && <Fireworks />}
                     <GraphicBackground theme={story.theme} variantKey={index} />
 
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
@@ -196,6 +202,7 @@ export default function StoryContainer({ storiesData }) {
                             onImageClick={setSelectedImage}
                             showHint={showHint}
                             onHintDismiss={() => setHasSeenHint(true)}
+                            onTriggerFireworks={triggerFireworks}
                         />
                     </div>
                 </motion.div>
@@ -232,6 +239,42 @@ function RenderStoryContent(props) {
     }
 }
 
+const Typewriter = ({ text, delay = 0, speed = 50, className }) => {
+    const [displayedText, setDisplayedText] = useState('');
+    const [started, setStarted] = useState(false);
+
+    useEffect(() => {
+        const startTimeout = setTimeout(() => {
+            setStarted(true);
+        }, delay);
+        return () => clearTimeout(startTimeout);
+    }, [delay]);
+
+    useEffect(() => {
+        if (!started) return;
+        let timeout;
+        if (displayedText.length < text.length) {
+            timeout = setTimeout(() => {
+                setDisplayedText(text.slice(0, displayedText.length + 1));
+            }, speed);
+        }
+        return () => clearTimeout(timeout);
+    }, [started, displayedText, text, speed]);
+
+    return (
+        <span className={className}>
+            {displayedText}
+            {displayedText.length < text.length && (
+                <motion.span
+                    animate={{ opacity: [1, 0] }}
+                    transition={{ repeat: Infinity, duration: 0.8 }}
+                    className="inline-block w-2 h-8 bg-black ml-1 align-middle"
+                />
+            )}
+        </span>
+    );
+};
+
 const WelcomeStory = ({ story }) => (
     <div className="text-center mt-[-10vh]">
         {story.icon && (
@@ -258,7 +301,7 @@ const WelcomeStory = ({ story }) => (
             transition={{ delay: 0.7 }}
             className="text-lg opacity-70 px-8 font-medium"
         >
-            {story.subtitle}
+            <Typewriter text={story.subtitle} delay={1200} speed={30} />
         </motion.p>
     </div>
 );
@@ -274,7 +317,7 @@ const StatStory = ({ story, index }) => {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-5xl font-black uppercase tracking-tight mb-6 leading-none text-[#263238]"
             >
-                {story.title}
+                <Typewriter text={story.title} delay={300} speed={40} />
             </motion.h2>
             <motion.div
                 initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
@@ -292,7 +335,7 @@ const StatStory = ({ story, index }) => {
                 transition={{ delay: 0.4 }}
                 className="text-2xl text-text-soft leading-relaxed font-medium max-w-[90%]"
             >
-                {story.description}
+                <Typewriter text={story.description} delay={800} speed={20} />
             </motion.p>
         </div>
     );
@@ -300,8 +343,12 @@ const StatStory = ({ story, index }) => {
 
 const PhotoGridStory = ({ story, onImageClick, showHint, onHintDismiss }) => (
     <div className="w-full flex flex-col items-center">
-        <h2 className="text-5xl font-black mb-4 tracking-tight leading-none text-center">{story.title}</h2>
-        <p className="text-xl opacity-60 px-8 italic mb-8 text-center">{story.description}</p>
+        <h2 className="text-5xl font-black mb-4 tracking-tight leading-none text-center min-h-[3rem]">
+            <Typewriter text={story.title} delay={300} speed={40} />
+        </h2>
+        <div className="text-xl opacity-60 px-8 italic mb-8 text-center min-h-[1.5rem]">
+            <Typewriter text={story.description} delay={1500} speed={30} />
+        </div>
 
         <div className="grid grid-cols-2 gap-4 w-full px-4 relative">
             <InteractionHint show={showHint} onDismiss={onHintDismiss} />
@@ -328,13 +375,13 @@ const PhotoGridStory = ({ story, onImageClick, showHint, onHintDismiss }) => (
     </div>
 );
 
-const QuizStory = ({ story }) => {
+const QuizStory = ({ story, onTriggerFireworks }) => {
     const [selected, setSelected] = useState(null);
 
     return (
         <div className="w-full max-w-sm flex flex-col items-center">
-            <h2 className="text-4xl font-black mb-10 text-center leading-[1.1] tracking-tight text-[#263238]">
-                {story.title}
+            <h2 className="text-4xl font-black mb-10 text-center leading-[1.1] tracking-tight text-[#263238] min-h-[5rem] flex items-center justify-center">
+                <Typewriter text={story.title} delay={300} speed={30} />
             </h2>
             <div className="flex flex-col gap-5 w-full">
                 {story.options.map((opt, i) => {
@@ -367,7 +414,12 @@ const QuizStory = ({ story }) => {
                             key={i}
                             whileHover={!isRevealed ? { scale: 1.02, x: 2, y: -2 } : {}}
                             whileTap={!isRevealed ? { scale: 0.98, x: 0, y: 0 } : {}}
-                            onClick={() => !isRevealed && setSelected(i)}
+                            onClick={() => {
+                                if (!isRevealed) {
+                                    setSelected(i);
+                                    if (opt.correct) onTriggerFireworks();
+                                }
+                            }}
                             className={`
                                 relative p-6 rounded-xl font-bold text-xl text-left border-2 
                                 shadow-[4px_4px_0px_0px_rgba(38,50,56,1)] transition-all
@@ -389,8 +441,8 @@ const QuizStory = ({ story }) => {
 
 const ListStory = ({ story }) => (
     <div className="w-full max-w-md flex flex-col items-center text-center">
-        <h2 className="text-5xl font-black mb-12 tracking-tight leading-none text-[#263238] uppercase">
-            {story.title}
+        <h2 className="text-5xl font-black mb-12 tracking-tight leading-none text-[#263238] uppercase min-h-[3rem]">
+            <Typewriter text={story.title} delay={300} speed={40} />
         </h2>
 
         <div className="flex flex-col w-full gap-0">
@@ -402,7 +454,7 @@ const ListStory = ({ story }) => (
                     transition={{ delay: i * 0.2 }}
                     className="flex flex-col py-6 border-b border-black/10 last:border-none relative group"
                 >
-                    <span className="text-xs font-black uppercase tracking-[0.3em] opacity-40 mb-1 group-hover:opacity-100 transition-opacity">
+                    <span className="text-sm font-black uppercase tracking-[0.3em] text-[#263238] mb-2 opacity-100">
                         {item.label}
                     </span>
                     <ScrambleText
@@ -418,32 +470,20 @@ const ListStory = ({ story }) => (
 );
 
 const QuoteStory = ({ story, onRestart }) => {
-    const subtitleWords = story.subtitle.split(" ");
-
     return (
         <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 relative">
-            <h2 className="text-4xl font-black mb-6 leading-tight max-w-sm">
-                <ScrambleText>{story.title}</ScrambleText>
+            <h2 className="text-4xl font-black mb-8 leading-tight max-w-md min-h-[4rem] flex items-center justify-center">
+                <Typewriter text={story.title} delay={500} speed={50} />
             </h2>
 
-            <div className="flex flex-wrap justify-center gap-x-2 mb-16 max-w-sm">
-                {subtitleWords.map((word, i) => (
-                    <motion.span
-                        key={i}
-                        initial={{ opacity: 0, filter: 'blur(4px)', y: 5 }}
-                        animate={{ opacity: 0.7, filter: 'blur(0px)', y: 0 }}
-                        transition={{ delay: 1.2 + i * 0.1, duration: 0.4 }}
-                        className="text-2xl font-medium"
-                    >
-                        {word}
-                    </motion.span>
-                ))}
+            <div className="mb-16 max-w-sm min-h-[3em] text-2xl font-medium opacity-70 flex items-center justify-center">
+                <Typewriter text={story.subtitle} delay={3000} speed={30} />
             </div>
 
             <motion.button
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 2.5, type: 'spring', stiffness: 200 }}
+                transition={{ delay: 5.5, type: 'spring', stiffness: 200 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onRestart}
