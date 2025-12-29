@@ -8,7 +8,8 @@ import ImagePreloader from './ImagePreloader';
 import Fireworks from './Fireworks';
 import Number3D from './Number3D';
 import GraphicBackground from './GraphicBackground';
-import AnimatedNumber from './AnimatedNumber';
+import ScrambleText from './ScrambleText';
+import HeartReaction from './HeartReaction';
 
 export default function StoryContainer({ storiesData }) {
     const [index, setIndex] = useState(0);
@@ -203,6 +204,8 @@ export default function StoryContainer({ storiesData }) {
             {/* Tap zones for desktop/fast nav */}
             <div className="hidden md:block absolute inset-y-0 left-0 w-1/4 z-[60]" onClick={prev} />
             <div className="hidden md:block absolute inset-y-0 right-0 w-1/4 z-[60]" onClick={next} />
+
+            <HeartReaction />
 
             <ImageModal
                 isOpen={!!selectedImage}
@@ -402,11 +405,12 @@ const ListStory = ({ story }) => (
                     <span className="text-xs font-black uppercase tracking-[0.3em] opacity-40 mb-1 group-hover:opacity-100 transition-opacity">
                         {item.label}
                     </span>
-                    <AnimatedNumber
-                        value={item.value}
-                        className="text-5xl leading-none text-[#263238]"
+                    <ScrambleText
+                        className="text-5xl leading-none text-[#263238] inline-flex items-center justify-center min-h-[1.1em]"
                         style={{ fontFamily: '"Monoton", cursive' }}
-                    />
+                    >
+                        {item.value}
+                    </ScrambleText>
                 </motion.div>
             ))}
         </div>
@@ -452,11 +456,12 @@ const SummaryStory = ({ story, onRestart }) => (
                     transition={{ delay: i * 0.15 + 0.3 }}
                     className="flex flex-col items-center"
                 >
-                    <AnimatedNumber
-                        value={s.value}
-                        className="text-6xl leading-none text-[#263238]"
+                    <ScrambleText
+                        className="text-6xl leading-none text-[#263238] inline-flex items-center justify-center min-h-[1.1em]"
                         style={{ fontFamily: '"Monoton", cursive' }}
-                    />
+                    >
+                        {s.value}
+                    </ScrambleText>
                     <span className="text-sm font-bold uppercase tracking-[0.2em] opacity-40 mt-2">
                         {s.label}
                     </span>

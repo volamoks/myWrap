@@ -2,42 +2,46 @@ import { useState, useEffect } from 'react';
 
 const CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-export const useScrambleText = (value, speed = 40) => {
-    const [display, setDisplay] = useState('');
+const scramble = (str) => str.split('').map(char =>
+    /[0-9A-Za-z]/.test(char) ? CHARS[Math.floor(Math.random() * CHARS.length)] : char
+).join('');
+
+export const useScrambleText = (value, speed = 60, startDelay = 500) => {
     const originalValue = value.toString();
+    // Initialize with a scrambled version immediately so it doesn't show the answer
+    const [display, setDisplay] = useState(() => scramble(originalValue));
 
     useEffect(() => {
         let iterations = 0;
-        // Adjust iterations based on length so short words don't stuck and long words don't take forever
-        // But for "Matrix" feel, a fixed overhead is good.
-        const maxIterations = 10;
+        let interval;
 
-        const interval = setInterval(() => {
-            const scrambled = originalValue.split('').map((char, index) => {
-                // Scramble digits AND letters. Keep spaces/symbols static.
-                if (!/[0-9A-Za-z]/.test(char)) return char;
+        const timeout = setTimeout(() => {
+            interval = setInterval(() => {
+                const scrambled = originalValue.split('').map((char, index) => {
+                    if (!/[0-9A-Za-z]/.test(char)) return char;
+                    if (index < iterations) return originalValue[index];
+                    return CHARS[Math.floor(Math.random() * CHARS.length)];
+                }).join('');
 
-                if (index < iterations) {
-                    return originalValue[index];
+                setDisplay(scrambled);
+
+                if (iterations >= originalValue.length) {
+                    clearInterval(interval);
+                    setDisplay(originalValue);
                 }
 
-                return CHARS[Math.floor(Math.random() * CHARS.length)];
-            }).join('');
+                // Scramble speed: 
+                // Normalize duration for long text. Target ~25 frames (1.5s).
+                const step = Math.max(1 / 5, originalValue.length / 25);
+                iterations += step;
+            }, speed);
+        }, startDelay);
 
-            setDisplay(scrambled);
+        return () => {
+            clearTimeout(timeout);
+            if (interval) clearInterval(interval);
+        };
+    }, [originalValue, speed, startDelay]);
 
-            if (iterations >= originalValue.length) {
-                clearInterval(interval);
-                setDisplay(originalValue);
-            }
-
-            // Scramble speed: 
-            // 1/3 means 3 frames per character lock.
-            iterations += 1 / 3;
-        }, speed);
-
-        return () => clearInterval(interval);
-    }, [originalValue, speed]);
-
-    return display || originalValue;
+    return display;
 };

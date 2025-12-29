@@ -2,7 +2,8 @@ import React from 'react';
 import { useScrambleText } from '../hooks/useScrambleText';
 
 const Number3D = ({ value, theme = 'red' }) => {
-    const displayValue = useScrambleText(value);
+    // 600ms start delay to wait for slide transition
+    const displayValue = useScrambleText(value, 60, 600);
 
     // Color palettes for gradients
     const colors = {
