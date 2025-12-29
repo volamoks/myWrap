@@ -22,45 +22,78 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
     return (
         <div className="relative w-full h-full flex items-center justify-center p-4 bg-pastel-cream overflow-hidden">
             {/* Use a vibrant theme for the cover. 'red' matches the 3D numbers style often used. */}
-            <GraphicBackground theme="red" variantKey="cover" />
+            {/* Blue theme requested */}
+            <GraphicBackground theme="blue" variantKey="cover" />
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="relative z-10 flex flex-col items-center w-full max-w-sm"
+                className="relative z-10 flex flex-col items-center w-full max-w-2xl"
             >
-                {/* Massive Title - Poster Style */}
-                <h1 className="text-7xl mb-2 text-center leading-none text-[#D32F2F] select-none uppercase font-black"
-                    style={{ letterSpacing: '0px' }}>
-                    <ScrambleText>НАШ 2025</ScrambleText>
-                </h1>
+                {/* Main Lockup: Tree Left | Text Right */}
+                <div className="flex flex-row items-center justify-center w-full gap-4 mb-12 px-2">
+                    {/* Left: Tree - Bigger */}
+                    <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="flex-shrink-0"
+                    >
+                        <img
+                            src="/hero-tree.png"
+                            alt="Tree"
+                            className="w-[280px] h-auto object-contain drop-shadow-2xl rotate-[-3deg]"
+                        />
+                    </motion.div>
 
-                <p className="text-xl font-bold tracking-[0.3em] mb-12 opacity-60 text-black uppercase">
-                    ТОЛЬКО ДЛЯ ТЕБЯ
+                    {/* Right: Stacked Text - Massive */}
+                    <div className="flex flex-col items-start relative z-10">
+                        <span className="text-xl font-bold tracking-[0.4em] opacity-50 text-[#263238] uppercase mb-4 ml-2">
+                            НАШ
+                        </span>
+                        <h1 className="text-[10rem] font-normal text-[#0288D1] leading-[0.8] select-none"
+                            style={{ fontFamily: '"Monoton", cursive' }}>
+                            <ScrambleText>20</ScrambleText>
+                        </h1>
+                        <h1 className="text-[10rem] font-normal text-[#0288D1] leading-[0.8] select-none"
+                            style={{ fontFamily: '"Monoton", cursive' }}>
+                            <ScrambleText>25</ScrambleText>
+                        </h1>
+                    </div>
+                </div>
+
+                <p className="text-lg font-bold tracking-[0.2em] mb-10 opacity-70 text-[#263238] uppercase">
+                    Надо всего лишь ввести код
                 </p>
 
                 <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6">
-                    <div className="relative group">
-                        <input
-                            type="tel"
-                            value={pin}
-                            onChange={(e) => {
-                                setPin(e.target.value);
-                                setError(false);
-                            }}
-                            className={`
-                                w-48 py-2 text-center text-4xl font-bold tracking-[0.5em] 
-                                bg-transparent border-b-2 focus:outline-none 
-                                transition-all placeholder:text-black/10
-                                ${error
-                                    ? 'border-red-500 text-red-500'
-                                    : 'border-black/30 focus:border-black text-black'
-                                }
-                            `}
-                            placeholder="••••"
-                            maxLength={4}
-                            autoFocus
-                        />
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="relative group">
+                            <input
+                                type="tel"
+                                value={pin}
+                                onChange={(e) => {
+                                    setPin(e.target.value);
+                                    setError(false);
+                                }}
+                                className={`
+                                    w-48 py-2 text-center text-4xl font-bold tracking-[0.5em] 
+                                    bg-transparent border-b-2 focus:outline-none 
+                                    transition-all placeholder:text-black/10
+                                    ${error
+                                        ? 'border-red-500 text-red-500'
+                                        : 'border-black/30 focus:border-black text-black'
+                                    }
+                                `}
+                                placeholder="••••"
+                                maxLength={4}
+                                autoFocus
+                            />
+                        </div>
+                        {/* Hint Moved Here and Secret Removed */}
+                        <p className="text-xs font-bold opacity-40 uppercase tracking-widest text-[#263238] animate-pulse">
+                            Введите PIN
+                        </p>
                     </div>
 
                     <motion.button
@@ -69,7 +102,7 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                         type="submit"
                         disabled={pin.length < 4}
                         className="
-                            mt-4 bg-black text-white px-10 py-4 rounded-full font-bold 
+                            mt-2 bg-black text-white px-12 py-4 rounded-full font-bold 
                             uppercase tracking-widest flex items-center gap-2 
                             shadow-xl transition-all
                             disabled:opacity-0 disabled:translate-y-4
