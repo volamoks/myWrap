@@ -424,7 +424,7 @@ const ListStory = ({ story }) => (
                         {item.label}
                     </span>
                     <ScrambleText
-                        className="text-5xl leading-none text-[#263238] inline-flex items-center justify-center min-h-[1.1em]"
+                        className="text-3xl sm:text-4xl md:text-5xl leading-none text-[#263238] inline-flex items-center justify-center min-h-[1.1em] flex-wrap text-center"
                         style={{ fontFamily: '"Monoton", cursive' }}
                     >
                         {item.value}
