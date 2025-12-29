@@ -438,8 +438,10 @@ const ListStory = ({ story }) => (
 const QuoteStory = ({ story, onRestart }) => {
     return (
         <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 relative">
-            <h2 className="text-4xl font-black mb-8 leading-tight max-w-md min-h-[4rem] flex items-center justify-center">
-                <ScrambleText>{story.title}</ScrambleText>
+            <h2 className="w-full max-w-lg mb-8 min-h-[4rem] flex items-center justify-center px-4">
+                <ScrambleText className="text-3xl md:text-4xl font-black leading-tight text-center px-2">
+                    {story.title}
+                </ScrambleText>
             </h2>
 
             <div className="mb-16 max-w-sm min-h-[3em] text-2xl font-medium opacity-70 flex items-center justify-center">
