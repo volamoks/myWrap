@@ -21,7 +21,21 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
 
     return (
         <div className="relative w-full h-full flex items-center justify-center p-4 bg-pastel-cream overflow-hidden">
-            {/* Use a vibrant theme for the cover. 'red' matches the 3D numbers style often used. */}
+            {/* Digital Overlay Layers */}
+            <div className="absolute inset-0 z-[5] pointer-events-none overflow-hidden opacity-[0.03]">
+                {/* Scanlines */}
+                <div className="absolute inset-0" style={{
+                    backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 50%)',
+                    backgroundSize: '100% 4px'
+                }} />
+                {/* Moving Scanline Bar */}
+                <motion.div
+                    animate={{ y: ['-100%', '100%'] }}
+                    transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                    className="absolute w-full h-[20%] bg-gradient-to-b from-transparent via-black/10 to-transparent"
+                />
+            </div>
+
             {/* Blue theme requested */}
             <GraphicBackground theme="blue" variantKey="cover" />
 
@@ -92,7 +106,7 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                         </div>
                         {/* Hint Moved Here and Secret Removed */}
                         <p className="text-xs font-bold opacity-40 uppercase tracking-widest text-[#263238] animate-pulse">
-                            Введите PIN
+
                         </p>
                     </div>
 

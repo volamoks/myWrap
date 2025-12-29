@@ -417,21 +417,43 @@ const ListStory = ({ story }) => (
     </div>
 );
 
-const QuoteStory = ({ story, onRestart }) => (
-    <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 relative">
-        <h2 className="text-4xl font-black mb-6 leading-tight">{story.title}</h2>
-        <p className="text-2xl opacity-70 font-medium mb-16">{story.subtitle}</p>
+const QuoteStory = ({ story, onRestart }) => {
+    const subtitleWords = story.subtitle.split(" ");
 
-        <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onRestart}
-            className="px-10 py-4 bg-black text-white rounded-full font-bold text-lg uppercase tracking-widest shadow-xl flex items-center gap-2"
-        >
-            <RotateCcw className="w-5 h-5" /> REPLAY
-        </motion.button>
-    </div>
-);
+    return (
+        <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 relative">
+            <h2 className="text-4xl font-black mb-6 leading-tight max-w-sm">
+                <ScrambleText>{story.title}</ScrambleText>
+            </h2>
+
+            <div className="flex flex-wrap justify-center gap-x-2 mb-16 max-w-sm">
+                {subtitleWords.map((word, i) => (
+                    <motion.span
+                        key={i}
+                        initial={{ opacity: 0, filter: 'blur(4px)', y: 5 }}
+                        animate={{ opacity: 0.7, filter: 'blur(0px)', y: 0 }}
+                        transition={{ delay: 1.2 + i * 0.1, duration: 0.4 }}
+                        className="text-2xl font-medium"
+                    >
+                        {word}
+                    </motion.span>
+                ))}
+            </div>
+
+            <motion.button
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 2.5, type: 'spring', stiffness: 200 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onRestart}
+                className="px-10 py-4 bg-black text-white rounded-full font-bold text-lg uppercase tracking-widest shadow-xl flex items-center gap-2"
+            >
+                <RotateCcw className="w-5 h-5" /> REPLAY
+            </motion.button>
+        </div>
+    );
+};
 
 const SummaryStory = ({ story, onRestart }) => (
     <div className="w-full h-full flex flex-col items-center justify-center p-6 relative text-center">
