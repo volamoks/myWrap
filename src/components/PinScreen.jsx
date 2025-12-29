@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import GraphicBackground from './GraphicBackground';
+import ScrambleText from './ScrambleText';
 
 export default function PinScreen({ onUnlock, correctPin = '2024' }) {
     const [pin, setPin] = useState('');
@@ -31,7 +32,7 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                 {/* Massive Title - Poster Style */}
                 <h1 className="text-7xl mb-2 text-center leading-none text-[#D32F2F] select-none uppercase font-black"
                     style={{ letterSpacing: '0px' }}>
-                    НАШ 2025
+                    <ScrambleText>НАШ 2025</ScrambleText>
                 </h1>
 
                 <p className="text-xl font-bold tracking-[0.3em] mb-12 opacity-60 text-black uppercase">
