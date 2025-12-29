@@ -28,9 +28,9 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative z-10 flex flex-col items-center w-full max-w-sm"
             >
-                {/* Massive Monoton Title - Poster Style */}
-                <h1 className="text-7xl mb-2 text-center leading-none text-[#D32F2F] select-none uppercase"
-                    style={{ fontFamily: '"Monoton", cursive', letterSpacing: '0px' }}>
+                {/* Massive Title - Poster Style */}
+                <h1 className="text-7xl mb-2 text-center leading-none text-[#D32F2F] select-none uppercase font-black"
+                    style={{ letterSpacing: '0px' }}>
                     НАШ 2025
                 </h1>
 
