@@ -77,7 +77,7 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                 </div>
 
                 <p className="text-lg font-bold tracking-[0.2em] mb-10 opacity-70 text-[#263238] uppercase">
-                    Надо всего лишь ввести код
+                    Осталось всего лишь ввести код
                 </p>
 
                 <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6">

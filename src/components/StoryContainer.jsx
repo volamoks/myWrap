@@ -239,41 +239,7 @@ function RenderStoryContent(props) {
     }
 }
 
-const Typewriter = ({ text, delay = 0, speed = 50, className }) => {
-    const [displayedText, setDisplayedText] = useState('');
-    const [started, setStarted] = useState(false);
 
-    useEffect(() => {
-        const startTimeout = setTimeout(() => {
-            setStarted(true);
-        }, delay);
-        return () => clearTimeout(startTimeout);
-    }, [delay]);
-
-    useEffect(() => {
-        if (!started) return;
-        let timeout;
-        if (displayedText.length < text.length) {
-            timeout = setTimeout(() => {
-                setDisplayedText(text.slice(0, displayedText.length + 1));
-            }, speed);
-        }
-        return () => clearTimeout(timeout);
-    }, [started, displayedText, text, speed]);
-
-    return (
-        <span className={className}>
-            {displayedText}
-            {displayedText.length < text.length && (
-                <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.8 }}
-                    className="inline-block w-2 h-8 bg-black ml-1 align-middle"
-                />
-            )}
-        </span>
-    );
-};
 
 const WelcomeStory = ({ story }) => (
     <div className="text-center mt-[-10vh]">
@@ -301,7 +267,7 @@ const WelcomeStory = ({ story }) => (
             transition={{ delay: 0.7 }}
             className="text-lg opacity-70 px-8 font-medium"
         >
-            <Typewriter text={story.subtitle} delay={1200} speed={30} />
+            {story.subtitle}
         </motion.p>
     </div>
 );
@@ -317,7 +283,7 @@ const StatStory = ({ story, index }) => {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-5xl font-black uppercase tracking-tight mb-6 leading-none text-[#263238]"
             >
-                <Typewriter text={story.title} delay={300} speed={40} />
+                {story.title}
             </motion.h2>
             <motion.div
                 initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
@@ -335,19 +301,19 @@ const StatStory = ({ story, index }) => {
                 transition={{ delay: 0.4 }}
                 className="text-2xl text-text-soft leading-relaxed font-medium max-w-[90%]"
             >
-                <Typewriter text={story.description} delay={800} speed={20} />
+                {story.description}
             </motion.p>
-        </div>
+        </div >
     );
 };
 
 const PhotoGridStory = ({ story, onImageClick, showHint, onHintDismiss }) => (
     <div className="w-full flex flex-col items-center">
         <h2 className="text-5xl font-black mb-4 tracking-tight leading-none text-center min-h-[3rem]">
-            <Typewriter text={story.title} delay={300} speed={40} />
+            {story.title}
         </h2>
         <div className="text-xl opacity-60 px-8 italic mb-8 text-center min-h-[1.5rem]">
-            <Typewriter text={story.description} delay={1500} speed={30} />
+            {story.description}
         </div>
 
         <div className="grid grid-cols-2 gap-4 w-full px-4 relative">
@@ -381,7 +347,7 @@ const QuizStory = ({ story, onTriggerFireworks }) => {
     return (
         <div className="w-full max-w-sm flex flex-col items-center">
             <h2 className="text-4xl font-black mb-10 text-center leading-[1.1] tracking-tight text-[#263238] min-h-[5rem] flex items-center justify-center">
-                <Typewriter text={story.title} delay={300} speed={30} />
+                {story.title}
             </h2>
             <div className="flex flex-col gap-5 w-full">
                 {story.options.map((opt, i) => {
@@ -442,7 +408,7 @@ const QuizStory = ({ story, onTriggerFireworks }) => {
 const ListStory = ({ story }) => (
     <div className="w-full max-w-md flex flex-col items-center text-center">
         <h2 className="text-5xl font-black mb-12 tracking-tight leading-none text-[#263238] uppercase min-h-[3rem]">
-            <Typewriter text={story.title} delay={300} speed={40} />
+            {story.title}
         </h2>
 
         <div className="flex flex-col w-full gap-0">
@@ -473,11 +439,11 @@ const QuoteStory = ({ story, onRestart }) => {
     return (
         <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 relative">
             <h2 className="text-4xl font-black mb-8 leading-tight max-w-md min-h-[4rem] flex items-center justify-center">
-                <Typewriter text={story.title} delay={500} speed={50} />
+                <ScrambleText>{story.title}</ScrambleText>
             </h2>
 
             <div className="mb-16 max-w-sm min-h-[3em] text-2xl font-medium opacity-70 flex items-center justify-center">
-                <Typewriter text={story.subtitle} delay={3000} speed={30} />
+                {story.subtitle}
             </div>
 
             <motion.button
