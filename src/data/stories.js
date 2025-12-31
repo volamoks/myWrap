@@ -1,51 +1,78 @@
-[
+export const initialStories = [
     {
         "id": 1,
         "type": "welcome",
         "title": "2025",
-        "subtitle": "Ready? Let's go",
-        "icon": "✨",
+        "subtitle": "Готов? Листай дальше",
+        "icon": "",
         "theme": "red",
         "duration": 5000
     },
     {
         "id": 2,
         "type": "stat",
-        "title": "Time together",
-        "value": "1464",
-        "description": "Hours we've been together. Let's keep going",
+        "title": "Познакомились мы ",
+        "value": "1.5",
+        "description": "года назад",
         "theme": "blue",
         "duration": 6000
     },
     {
         "id": 3,
         "type": "stat",
-        "title": "We went on",
-        "value": "42",
-        "description": "Dates. Even more await us ahead",
+        "title": "Были вместе в",
+        "value": "2",
+        "description": "городах",
         "theme": "green",
+        "duration": 6000
+    },
+    {
+        "id": 3,
+        "type": "stat",
+        "title": "Поедем на ",
+        "value": "Bali",
+        "description": "еще раз",
+        "theme": "yellow",
         "duration": 6000
     },
     {
         "id": 4,
         "type": "quiz",
-        "title": "We sent so many cat stickers. Guess how many?",
+        "title": "Сколько раз я тебе отправил Толстого кота",
         "options": [
-            { "text": "150", "correct": false },
-            { "text": "342", "correct": true },
-            { "text": "89", "correct": false }
+            {
+                "text": "150",
+                "correct": false
+            },
+            {
+                "text": "454",
+                "correct": true
+            },
+            {
+                "text": "89",
+                "correct": false
+            }
         ],
-        "theme": "yellow",
+        "theme": "blue",
         "duration": 10000
     },
     {
         "id": 5,
         "type": "list",
-        "title": "Our Moments",
+        "title": "Our moments",
         "items": [
-            { "label": "Trips", "value": "12" },
-            { "label": "Movies", "value": "48" },
-            { "label": "Songs", "value": "156" }
+            {
+                "label": "Путешествия",
+                "value": "2"
+            },
+            {
+                "label": "Фильмы",
+                "value": "178"
+            },
+            {
+                "label": "Прогулки с Боней",
+                "value": "11"
+            }
         ],
         "theme": "purple",
         "duration": 8000
@@ -53,11 +80,20 @@
     {
         "id": 6,
         "type": "quiz",
-        "title": "Most used phrase. Guess?",
+        "title": "Мое самое любимое прозвище для тебя?",
         "options": [
-            { "text": "I love you", "correct": false },
-            { "text": "Food?", "correct": true },
-            { "text": "Where are keys?", "correct": false }
+            {
+                "text": "Успешный молодой человек",
+                "correct": false
+            },
+            {
+                "text": "ЛОХ",
+                "correct": true
+            },
+            {
+                "text": "Че так холодно у тебя?",
+                "correct": false
+            }
         ],
         "theme": "red",
         "duration": 10000
@@ -68,7 +104,7 @@
         "title": "How it started...",
         "description": "First steps",
         "images": [
-            "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&auto=format&fit=crop",
+            "https://drive.google.com/file/d/1qN2jsBSETaMd6I7bI_xcPyjGE42ZasJx/view?usp=sharing",
             "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop"
         ],
         "theme": "blue",
@@ -78,7 +114,7 @@
         "id": 8,
         "type": "photo-grid",
         "title": "How it's going...",
-        "description": "Just the beginning",
+        "description": "And this is just the beginning",
         "images": [
             "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1523307730650-5945347f3911?w=800&auto=format&fit=crop"
@@ -91,9 +127,18 @@
         "type": "list",
         "title": "Top Vibes",
         "items": [
-            { "label": "Late night talks", "value": "∞" },
-            { "label": "Top share moment", "value": "quiet walks" },
-            { "label": "Our top activity", "value": "holding hands" }
+            {
+                "label": "Вечером за проектором",
+                "value": "∞"
+            },
+            {
+                "label": "Лучший пляж",
+                "value": "Melasti"
+            },
+            {
+                "label": "СЛюбимый сериал",
+                "value": "Game of Thrones"
+            }
         ],
         "theme": "purple",
         "duration": 8000
@@ -102,9 +147,18 @@
         "id": 10,
         "type": "summary",
         "stats": [
-            { "label": "Dates", "value": "42" },
-            { "label": "Hours together", "value": "1464" },
-            { "label": "Cats", "value": "342" }
+            {
+                "label": "Вечеров вместе",
+                "value": "201"
+            },
+            {
+                "label": "Любимый город",
+                "value": "Kuala-Lumpur"
+            },
+            {
+                "label": "Стикеров Бони",
+                "value": "176"
+            }
         ],
         "theme": "yellow",
         "duration": 10000
@@ -112,9 +166,9 @@
     {
         "id": 11,
         "type": "quote",
-        "title": "I don’t know what 2026 will bring.",
-        "subtitle": "But I like the idea of discovering it with you.",
+        "title": "Не знаю что дальше.",
+        "subtitle": "Но еще надеюсь, но поедем еще раз в путешествие скоро",
         "theme": "black",
         "duration": 10000
     }
-]
+];
