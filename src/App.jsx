@@ -41,7 +41,7 @@ function App() {
     }
   }, []);
 
-  if (mode === 'loading') return null;
+  if (mode === 'loading') return <div className="fixed inset-0 bg-[#FFFFFF]" />;
 
   if (mode === 'admin') {
     return <AdminPage />;

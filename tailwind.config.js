@@ -21,8 +21,8 @@ export default {
         'text-soft': '#455A64', // Blue Grey 700
       },
       fontFamily: {
-        'display': ['Comfortaa', 'cursive'],
-        'body': ['Quicksand', 'sans-serif'],
+        'display': ['Kanit', 'sans-serif'],
+        'body': ['Space Grotesk', 'sans-serif'],
       },
     },
     plugins: [],

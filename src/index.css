@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@900&family=Monoton&family=Space+Grotesk:wght@300;400;500;600;700&family=Rampart+One&display=block');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&family=Monoton&family=Space+Grotesk:wght@300;400;500;600;700&family=Rampart+One&display=block');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: 'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Kanit', 'Space Grotesk', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 500;
 
   color-scheme: light;
-  color: #2F3E46;
-  background-color: #FAFAFA;
+  color: #263238;
+  background-color: #FFFFFF;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,12 +21,10 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   overflow: hidden;
-  background: #FAFAFA;
+  background: #FFFFFF;
 }
 
 h1,
