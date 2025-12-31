@@ -504,18 +504,18 @@ const QuoteStory = ({ story, onRestart }) => {
 };
 
 const SummaryStory = ({ story, onRestart }) => (
-    <div className="w-full h-full flex flex-col items-center justify-center p-6 relative text-center">
+    <div className="w-full h-full flex flex-col items-center justify-start pt-24 pb-32 px-6 relative overflow-y-auto no-scrollbar">
         <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="mb-12"
+            className="mb-12 flex-shrink-0"
         >
             <SectionHeader>
                 RECAP
             </SectionHeader>
         </motion.div>
 
-        <div className="flex flex-col gap-10 w-full max-w-xs relative z-10">
+        <div className="flex flex-col gap-12 w-full max-w-xs relative z-10 pb-12">
             {story.stats.map((s, i) => (
                 <motion.div
                     key={i}
@@ -525,16 +525,27 @@ const SummaryStory = ({ story, onRestart }) => (
                     className="flex flex-col items-center"
                 >
                     <AccentText
-                        className="text-8xl md:text-9xl leading-[0.85] text-[#263238] inline-flex items-center justify-center min-h-[1.1em] drop-shadow-sm"
+                        className="text-7xl md:text-9xl leading-[0.85] text-[#263238] inline-flex items-center justify-center min-h-[1.1em] drop-shadow-md"
                         theme={story.theme}
+                        size="text-7xl md:text-9xl"
                     >
                         {s.value}
                     </AccentText>
-                    <span className="text-sm font-bold uppercase tracking-[0.2em] text-[#263238] opacity-40 mt-1">
+                    <span className="text-sm font-black uppercase tracking-[0.2em] text-[#263238] opacity-50 mt-2">
                         {s.label}
                     </span>
                 </motion.div>
             ))}
         </div>
+
+        <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            onClick={onRestart}
+            className="flex-shrink-0 mt-8 mb-12 px-8 py-3 bg-[#263238] text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl flex items-center gap-2 hover:bg-black transition-colors"
+        >
+            <RotateCcw size={16} /> REPLAY
+        </motion.button>
     </div>
 );
