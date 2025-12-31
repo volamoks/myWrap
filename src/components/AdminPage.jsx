@@ -2,85 +2,126 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Save, Copy, FileText, CheckCircle, Smartphone, Lock, AlertCircle, HelpCircle } from 'lucide-react';
 import { compressToEncodedURIComponent } from 'lz-string';
+import { encodeConfig } from '../utils/encoding';
 
 const DEFAULT_JSON = [
     {
         "id": 1,
         "type": "welcome",
-        "title": "Hello!",
-        "subtitle": "Text below title",
+        "title": "2025",
+        "subtitle": "Ready? Then swipe",
         "icon": "✨",
         "theme": "red",
-        "duration": 5000,
-        desc: "First slide with greeting"
+        "duration": 5000
     },
     {
         "id": 2,
         "type": "stat",
-        "title": "Dates",
-        "value": "42",
-        "description": "Number description",
+        "title": "1464",
+        "value": "1464",
+        "description": "Hours we've been together. Let's move on",
         "theme": "blue",
-        "duration": 6000,
-        desc: "Large number with description"
+        "duration": 6000
     },
     {
         "id": 3,
-        "type": "quiz",
-        "title": "Question?",
-        "options": [
-            { "text": "Yes", "correct": true },
-            { "text": "No", "correct": false }
-        ],
-        "theme": "yellow",
-        "duration": 10000,
-        desc: "Quiz with options"
+        "type": "stat",
+        "title": "We went on",
+        "value": "42",
+        "description": "Dates. Even more await us ahead",
+        "theme": "green",
+        "duration": 6000
     },
     {
         "id": 4,
-        "type": "list",
-        "title": "Our Tops",
-        "items": [
-            { "label": "Food", "value": "Pizza" },
-            { "label": "Movie", "value": "Dune" }
+        "type": "quiz",
+        "title": "We sent so many cat stickers. Guess how many?",
+        "options": [
+            { "text": "150", "correct": false },
+            { "text": "342", "correct": true },
+            { "text": "89", "correct": false }
         ],
-        "theme": "purple",
-        "duration": 8000,
-        desc: "List of facts"
+        "theme": "yellow",
+        "duration": 10000
     },
     {
         "id": 5,
-        "type": "photo-grid",
-        "title": "Header",
-        "description": "Caption",
-        "images": [
-            "https://img.freepik.com/free-photo/beautiful-anime-character-cartoon-scene_23-2151035165.jpg",
-            "https://img.freepik.com/free-photo/anime-style-clouds_23-2151071680.jpg"
+        "type": "list",
+        "title": "Our moments",
+        "items": [
+            { "label": "Trips", "value": "12" },
+            { "label": "Movies", "value": "48" },
+            { "label": "Songs", "value": "156" }
         ],
-        "theme": "blue",
-        "duration": 7000,
-        desc: "Photo grid (2-3 photos)"
+        "theme": "purple",
+        "duration": 8000
     },
     {
         "id": 6,
-        "type": "quote",
-        "title": "Header",
-        "subtitle": "Caption",
-        "theme": "black",
-        "duration": 10000,
-        desc: "Quote with Replay button"
+        "type": "quiz",
+        "title": "Most frequent phrase. Guess?",
+        "options": [
+            { "text": "I love you", "correct": false },
+            { "text": "What shall we eat?", "correct": true },
+            { "text": "Where are the keys?", "correct": false }
+        ],
+        "theme": "red",
+        "duration": 10000
     },
     {
         "id": 7,
+        "type": "photo-grid",
+        "title": "How it started...",
+        "description": "First steps",
+        "images": [
+            "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop"
+        ],
+        "theme": "blue",
+        "duration": 7000
+    },
+    {
+        "id": 8,
+        "type": "photo-grid",
+        "title": "How it's going...",
+        "description": "And this is just the beginning",
+        "images": [
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1523307730650-5945347f3911?w=800&auto=format&fit=crop"
+        ],
+        "theme": "green",
+        "duration": 7000
+    },
+    {
+        "id": 9,
+        "type": "list",
+        "title": "Top Vibes",
+        "items": [
+            { "label": "Late night talks", "value": "∞" },
+            { "label": "Top share moment", "value": "quiet walks" },
+            { "label": "Our top activity", "value": "holding hands" }
+        ],
+        "theme": "purple",
+        "duration": 8000
+    },
+    {
+        "id": 10,
         "type": "summary",
-        "title": "Recap",
         "stats": [
-            { "label": "Total", "value": "100" },
-            { "label": "Pizza eaten", "value": "20" }
+            { "label": "Dates", "value": "42" },
+            { "label": "Hours together", "value": "1464" },
+            { "label": "Cats", "value": "342" }
         ],
         "theme": "yellow",
-        "duration": 10000,
-        desc: "Final stats (list)"
+        "duration": 10000
+    },
+    {
+        "id": 11,
+        "type": "quote",
+        "title": "I don’t know what 2026 will bring.",
+        "subtitle": "But I like the idea of discovering it with you.",
+        "theme": "black",
+        "duration": 10000
     }
 ];
 
@@ -107,12 +148,11 @@ export default function AdminPage() {
                 stories: parsed
             };
 
-            const jsonString = JSON.stringify(config);
-            const encoded = compressToEncodedURIComponent(jsonString);
+            const encoded = encodeConfig(config);
 
             if (!encoded) throw new Error("Encoding error");
 
-            const url = `${window.location.origin}/?data=${encoded}`;
+            const url = `${window.location.origin}/?d=${encoded}`;
             setGeneratedLink(url);
 
             // Auto copy
