@@ -25,24 +25,31 @@ const GraphicBackground = ({ theme = 'red', variantKey = 0 }) => {
             {/* Base muted background color handled by CSS classes in parent, but we can add a subtle tint here if needed */}
 
             {/* Patterns are now treated as "Graphic Elements" - offset, large, asymmetrical */}
-            <div className="absolute inset-0 opacity-40 mix-blend-multiply">
+            <motion.div
+                animate={{
+                    scale: [1, 1.02, 1],
+                    opacity: [0.4, 0.5, 0.4]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 z-0 mix-blend-multiply"
+            >
                 {pattern === 'stripes' && <StripesPattern color={c.accent} />}
                 {pattern === 'grid' && <GridPattern color={c.accent} />}
                 {pattern === 'circles' && <CirclesPattern color={c.accent} />}
                 {pattern === 'dots' && <DotsPattern color={c.accent} />}
                 {pattern === 'rays' && <RaysPattern color={c.accent} />}
-            </div>
+            </motion.div>
 
             {/* Subtle noise overlay for texture */}
             <div className="absolute inset-0 opacity-20 mix-blend-overlay" style={{
                 backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'1\'/%3E%3C/svg%3E")'
             }} />
 
-            {/* Subtle digital "scanner" line sweep */}
+            {/* Digital "scanner" line sweep - Made more visible */}
             <motion.div
-                animate={{ y: ['-100%', '200%'] }}
-                transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-                className="absolute inset-x-0 h-px bg-current opacity-20 pointer-events-none"
+                animate={{ y: ['-10%', '110%'] }}
+                transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
+                className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-30 pointer-events-none blur-[1px]"
                 style={{ color: c.accent }}
             />
         </div>
