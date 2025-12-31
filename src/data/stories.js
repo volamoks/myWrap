@@ -104,8 +104,10 @@ export const initialStories = [
         "title": "How it started...",
         "description": "First steps",
         "images": [
-            "https://drive.google.com/file/d/1qN2jsBSETaMd6I7bI_xcPyjGE42ZasJx/view?usp=sharing",
-            "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop"
+            "/assets/IMG_1077.jpg",
+            "/assets/IMG_1785.jpg",
+            "/assets/IMG_2742.jpg",
+            "/assets/IMG_3212.jpg"
         ],
         "theme": "blue",
         "duration": 7000
@@ -116,8 +118,10 @@ export const initialStories = [
         "title": "How it's going...",
         "description": "And this is just the beginning",
         "images": [
-            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1523307730650-5945347f3911?w=800&auto=format&fit=crop"
+            "/assets/IMG_4835.jpg",
+            "/assets/IMG_4902.jpg",
+            "/assets/IMG_4999.jpg",
+            "/assets/IMG_5009.jpg"
         ],
         "theme": "green",
         "duration": 7000
