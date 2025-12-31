@@ -537,15 +537,5 @@ const SummaryStory = ({ story, onRestart }) => (
                 </motion.div>
             ))}
         </div>
-
-        <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            onClick={onRestart}
-            className="flex-shrink-0 mt-8 mb-12 px-8 py-3 bg-[#263238] text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl flex items-center gap-2 hover:bg-black transition-colors"
-        >
-            <RotateCcw size={16} /> REPLAY
-        </motion.button>
     </div>
 );
