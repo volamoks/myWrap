@@ -36,7 +36,7 @@ export default function SwipeHint({ show, direction = 'left', onDismiss }) {
                         <Hand size={32} className="text-text-soft" />
                     </motion.div>
                     <span className="font-display font-medium text-text-soft bg-white/60 px-3 py-1 rounded-full text-sm">
-                        {direction === 'left' ? 'Свайп влево' : 'Свайп вправо'}
+                        {direction === 'left' ? 'Swipe Left' : 'Swipe Right'}
                     </span>
                 </div>
             </motion.div>

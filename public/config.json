@@ -3,7 +3,7 @@
         "id": 1,
         "type": "welcome",
         "title": "2025",
-        "subtitle": "Готова? Тогда листай",
+        "subtitle": "Ready? Then swipe",
         "icon": "✨",
         "theme": "red",
         "duration": 5000
@@ -13,23 +13,23 @@
         "type": "stat",
         "title": "1464",
         "value": "1464",
-        "description": "Столько часов мы с тобой вместе. Поехали дальше",
+        "description": "Hours we've been together. Let's move on",
         "theme": "blue",
         "duration": 6000
     },
     {
         "id": 3,
         "type": "stat",
-        "title": "Мы сходили на",
+        "title": "We went on",
         "value": "42",
-        "description": "Свиданий. Ещё больше ждут нас впереди",
+        "description": "Dates. Even more await us ahead",
         "theme": "green",
         "duration": 6000
     },
     {
         "id": 4,
         "type": "quiz",
-        "title": "У нас было очень много стикеров с котиками. Угадаешь, сколько?",
+        "title": "We sent so many cat stickers. Guess how many?",
         "options": [
             {
                 "text": "150",
@@ -50,18 +50,18 @@
     {
         "id": 5,
         "type": "list",
-        "title": "Наши моменты",
+        "title": "Our moments",
         "items": [
             {
-                "label": "Поездок загород",
+                "label": "Trips",
                 "value": "12"
             },
             {
-                "label": "Фильмов",
+                "label": "Movies",
                 "value": "48"
             },
             {
-                "label": "Спетых песен",
+                "label": "Songs",
                 "value": "156"
             }
         ],
@@ -71,18 +71,18 @@
     {
         "id": 6,
         "type": "quiz",
-        "title": "Самая частая фраза. Угадаешь?",
+        "title": "Most frequent phrase. Guess?",
         "options": [
             {
-                "text": "Я тебя люблю",
+                "text": "I love you",
                 "correct": false
             },
             {
-                "text": "Что будем есть?",
+                "text": "What shall we eat?",
                 "correct": true
             },
             {
-                "text": "Где ключи?",
+                "text": "Where are the keys?",
                 "correct": false
             }
         ],
@@ -93,7 +93,7 @@
         "id": 7,
         "type": "photo-grid",
         "title": "How it started...",
-        "description": "Первые шаги",
+        "description": "First steps",
         "images": [
             "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop"
@@ -105,7 +105,7 @@
         "id": 8,
         "type": "photo-grid",
         "title": "How it's going...",
-        "description": "И это только начало",
+        "description": "And this is just the beginning",
         "images": [
             "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1523307730650-5945347f3911?w=800&auto=format&fit=crop"
@@ -139,15 +139,15 @@
         "type": "summary",
         "stats": [
             {
-                "label": "Свиданий",
+                "label": "Dates",
                 "value": "42"
             },
             {
-                "label": "Часов вместе",
+                "label": "Hours together",
                 "value": "1464"
             },
             {
-                "label": "Котиков",
+                "label": "Cats",
                 "value": "342"
             }
         ],

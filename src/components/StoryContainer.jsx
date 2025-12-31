@@ -6,10 +6,11 @@ import InteractionHint from './InteractionHint';
 import SwipeHint from './SwipeHint';
 import ImagePreloader from './ImagePreloader';
 import Fireworks from './Fireworks';
-import Number3D from './Number3D';
+import AccentText from './AccentText';
 import GraphicBackground from './GraphicBackground';
 import ScrambleText from './ScrambleText';
 import HeartReaction from './HeartReaction';
+import SectionHeader from './SectionHeader';
 
 export default function StoryContainer({ storiesData }) {
     const [index, setIndex] = useState(0);
@@ -105,9 +106,12 @@ export default function StoryContainer({ storiesData }) {
     if (error) {
         return (
             <div className="h-full w-full flex flex-col items-center justify-center bg-pastel-cream text-red-500 gap-4">
-                <p>Ошибка загрузки истории: {error}</p>
-                <button onClick={() => window.location.reload()} className="px-4 py-2 bg-white rounded shadow">
-                    Попробовать снова
+                <p>Error loading story: {error}</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="mt-4 px-6 py-2 bg-white text-black rounded-full font-bold"
+                >
+                    Try again
                 </button>
             </div>
         );
@@ -253,14 +257,16 @@ const WelcomeStory = ({ story }) => (
                 <div className="text-8xl mb-4">{story.icon}</div>
             </motion.div>
         )}
-        <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-7xl font-black text-text-soft mb-6 leading-tight uppercase tracking-tight"
+            className="mb-6"
         >
-            {story.title}
-        </motion.h1>
+            <AccentText theme={story.theme || 'blue'} size="text-8xl md:text-9xl">
+                {story.title}
+            </AccentText>
+        </motion.div>
         <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -278,13 +284,9 @@ const StatStory = ({ story, index }) => {
 
     return (
         <div className={`w-full max-w-sm flex flex-col ${alignmentClass}`}>
-            <motion.h2
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="text-5xl font-black uppercase tracking-tight mb-6 leading-none text-[#263238]"
-            >
+            <SectionHeader className="mb-6">
                 {story.title}
-            </motion.h2>
+            </SectionHeader>
             <motion.div
                 initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -292,7 +294,9 @@ const StatStory = ({ story, index }) => {
                 className="mb-6 relative z-10 w-full"
             >
                 <div className={`flex ${(!index || index % 3 === 1) ? 'justify-center' : index % 3 === 0 ? 'justify-start' : 'justify-end'}`}>
-                    <Number3D value={story.value} theme={story.theme} />
+                    <AccentText value={story.value} theme={story.theme} size="text-[12rem] md:text-[14rem]">
+                        {story.value}
+                    </AccentText>
                 </div>
             </motion.div>
             <motion.p
@@ -308,13 +312,13 @@ const StatStory = ({ story, index }) => {
 };
 
 const PhotoGridStory = ({ story, onImageClick, showHint, onHintDismiss }) => (
-    <div className="w-full flex flex-col items-center">
-        <h2 className="text-5xl font-black mb-4 tracking-tight leading-none text-center min-h-[3rem]">
+    <div className="w-full h-full flex flex-col items-center justify-center p-4">
+        <SectionHeader className="mb-6">
             {story.title}
-        </h2>
-        <div className="text-xl opacity-60 px-8 italic mb-8 text-center min-h-[1.5rem]">
+        </SectionHeader>
+        <p className="text-xl text-center text-[#263238] opacity-60 font-medium mb-8">
             {story.description}
-        </div>
+        </p>
 
         <div className="grid grid-cols-2 gap-4 w-full px-4 relative">
             <InteractionHint show={showHint} onDismiss={onHintDismiss} />
@@ -344,34 +348,52 @@ const PhotoGridStory = ({ story, onImageClick, showHint, onHintDismiss }) => (
 const QuizStory = ({ story, onTriggerFireworks }) => {
     const [selected, setSelected] = useState(null);
 
+    const themeColors = {
+        blue: '#0288D1',
+        green: '#388E3C',
+        yellow: '#FBC02D',
+        purple: '#8E24AA',
+        red: '#C62828',
+        black: '#263238'
+    };
+    const accentColor = themeColors[story.theme] || themeColors.blue;
+
     return (
         <div className="w-full max-w-sm flex flex-col items-center">
-            <h2 className="text-4xl font-black mb-10 text-center leading-[1.1] tracking-tight text-[#263238] min-h-[5rem] flex items-center justify-center">
+            <SectionHeader className="min-h-[5rem]">
                 {story.title}
-            </h2>
+            </SectionHeader>
             <div className="flex flex-col gap-5 w-full">
                 {story.options.map((opt, i) => {
                     const isSelected = selected === i;
                     const isRevealed = selected !== null;
                     const isCorrect = opt.correct;
 
-                    let bgClass = 'bg-white';
-                    let textClass = 'text-black';
-                    let borderClass = 'border-black';
+                    // Base styles
+                    let style = {
+                        backgroundColor: 'transparent',
+                        borderColor: accentColor,
+                        // Layered shadow: White block (offset) + Colored spread (simulating border)
+                        boxShadow: `8px 8px 0px 0px #FFFFFF, 8px 8px 0px 2px ${accentColor}`,
+                        color: '#263238'
+                    };
 
+                    // State-based overrides
                     if (isRevealed) {
                         if (isSelected) {
-                            bgClass = isCorrect ? 'bg-[#00E054]' : 'bg-[#FF4646]';
-                            textClass = 'text-white';
-                            borderClass = isCorrect ? 'border-[#00E054]' : 'border-[#FF4646]';
+                            style.backgroundColor = isCorrect ? '#00E054' : '#FF4646';
+                            style.borderColor = isCorrect ? '#00E054' : '#FF4646';
+                            style.color = '#FFFFFF';
+                            style.boxShadow = 'none';
                         } else if (isCorrect) {
-                            bgClass = 'bg-[#00E054]';
-                            textClass = 'text-white';
-                            borderClass = 'border-[#00E054]';
+                            style.backgroundColor = '#00E054';
+                            style.borderColor = '#00E054';
+                            style.color = '#FFFFFF';
+                            style.boxShadow = 'none';
                         } else {
-                            bgClass = 'bg-gray-100';
-                            textClass = 'text-gray-400';
-                            borderClass = 'border-gray-200';
+                            // Unselected, incorrect options remain simplified but faded?
+                            style.opacity = 0.5;
+                            style.boxShadow = 'none';
                         }
                     }
 
@@ -388,11 +410,9 @@ const QuizStory = ({ story, onTriggerFireworks }) => {
                             }}
                             className={`
                                 relative p-6 rounded-xl font-bold text-xl text-left border-2 
-                                shadow-[4px_4px_0px_0px_rgba(38,50,56,1)] transition-all
-                                flex items-center justify-between group
-                                ${bgClass} ${textClass} ${borderClass}
-                                ${isRevealed && !isSelected && 'shadow-none translate-y-1 translate-x-1'}
+                                transition-all flex items-center justify-between group
                             `}
+                            style={style}
                         >
                             <span className="relative z-10 uppercase tracking-wide">{opt.text}</span>
                             {isRevealed && isCorrect && <span className="text-2xl">✨</span>}
@@ -407,9 +427,9 @@ const QuizStory = ({ story, onTriggerFireworks }) => {
 
 const ListStory = ({ story }) => (
     <div className="w-full max-w-md flex flex-col items-center text-center">
-        <h2 className="text-5xl font-black mb-12 tracking-tight leading-none text-[#263238] uppercase min-h-[3rem]">
+        <SectionHeader>
             {story.title}
-        </h2>
+        </SectionHeader>
 
         <div className="flex flex-col w-full gap-0">
             {story.items.map((item, i) => (
@@ -423,12 +443,12 @@ const ListStory = ({ story }) => (
                     <span className="text-sm font-black uppercase tracking-[0.3em] text-[#263238] mb-2 opacity-100">
                         {item.label}
                     </span>
-                    <ScrambleText
+                    <AccentText
                         className="text-3xl sm:text-4xl md:text-5xl leading-none text-[#263238] inline-flex items-center justify-center min-h-[1.1em] flex-wrap text-center"
-                        style={{ fontFamily: '"Monoton", cursive' }}
+                        theme={story.theme}
                     >
                         {item.value}
-                    </ScrambleText>
+                    </AccentText>
                 </motion.div>
             ))}
         </div>
@@ -436,26 +456,46 @@ const ListStory = ({ story }) => (
 );
 
 const QuoteStory = ({ story, onRestart }) => {
+    const themeColors = {
+        blue: '#0288D1',
+        green: '#388E3C',
+        yellow: '#FBC02D',
+        purple: '#8E24AA',
+        red: '#C62828',
+        black: '#263238'
+    };
+    const accentColor = themeColors[story.theme] || themeColors.black;
+
     return (
         <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 relative">
-            <h2 className="w-full max-w-lg mb-8 min-h-[4rem] flex items-center justify-center px-4">
-                <ScrambleText className="text-3xl md:text-4xl font-black leading-tight text-center px-2">
+            <div className="w-full max-w-lg mb-8 flex items-center justify-center px-4">
+                <h2 className="text-3xl md:text-4xl font-black leading-tight text-center px-2 text-[#263238] uppercase">
                     {story.title}
-                </ScrambleText>
-            </h2>
-
-            <div className="mb-16 max-w-sm min-h-[3em] text-2xl font-medium opacity-70 flex items-center justify-center">
-                {story.subtitle}
+                </h2>
             </div>
+            <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+                className="text-xl md:text-2xl font-bold text-[#263238] max-w-md leading-relaxed opacity-80"
+            >
+                {story.subtitle}
+            </motion.p>
 
             <motion.button
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 5.5, type: 'spring', stiffness: 200 }}
+                transition={{ delay: 2, type: 'spring' }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onRestart}
-                className="px-10 py-4 bg-black text-white rounded-full font-bold text-lg uppercase tracking-widest shadow-xl flex items-center gap-2"
+                className="mt-16 px-10 py-4 rounded-xl font-bold text-lg uppercase tracking-widest flex items-center gap-2 border-2 transition-all"
+                style={{
+                    backgroundColor: 'transparent',
+                    borderColor: accentColor,
+                    color: '#263238',
+                    boxShadow: `8px 8px 0px 0px #FFFFFF, 8px 8px 0px 2px ${accentColor}`
+                }}
             >
                 <RotateCcw className="w-5 h-5" /> REPLAY
             </motion.button>
@@ -470,10 +510,9 @@ const SummaryStory = ({ story, onRestart }) => (
             animate={{ scale: 1, opacity: 1 }}
             className="mb-12"
         >
-            <h2 className="text-7xl font-black uppercase tracking-tight mb-0 text-[#263238] leading-none">
-                ИТОГИ
-            </h2>
-            <div className="h-1.5 w-24 bg-black mx-auto mt-4 rounded-full opacity-20"></div>
+            <SectionHeader>
+                RECAP
+            </SectionHeader>
         </motion.div>
 
         <div className="flex flex-col gap-10 w-full max-w-xs relative z-10">
@@ -485,13 +524,13 @@ const SummaryStory = ({ story, onRestart }) => (
                     transition={{ delay: i * 0.15 + 0.3 }}
                     className="flex flex-col items-center"
                 >
-                    <ScrambleText
-                        className="text-6xl leading-none text-[#263238] inline-flex items-center justify-center min-h-[1.1em]"
-                        style={{ fontFamily: '"Monoton", cursive' }}
+                    <AccentText
+                        className="text-8xl md:text-9xl leading-[0.85] text-[#263238] inline-flex items-center justify-center min-h-[1.1em] drop-shadow-sm"
+                        theme={story.theme}
                     >
                         {s.value}
-                    </ScrambleText>
-                    <span className="text-sm font-bold uppercase tracking-[0.2em] opacity-40 mt-2">
+                    </AccentText>
+                    <span className="text-sm font-bold uppercase tracking-[0.2em] text-[#263238] opacity-40 mt-1">
                         {s.label}
                     </span>
                 </motion.div>

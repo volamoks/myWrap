@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import GraphicBackground from './GraphicBackground';
 import ScrambleText from './ScrambleText';
+import AccentText from './AccentText';
+import GeometricTree from './GeometricTree';
 
 export default function PinScreen({ onUnlock, correctPin = '2024' }) {
     const [pin, setPin] = useState('');
@@ -44,40 +46,31 @@ export default function PinScreen({ onUnlock, correctPin = '2024' }) {
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative z-10 flex flex-col items-center w-full max-w-2xl"
             >
-                {/* Main Lockup: Tree Left | Text Right */}
-                <div className="flex flex-row items-center justify-center w-full gap-4 mb-12 px-2">
-                    {/* Left: Tree - Bigger */}
-                    <motion.div
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="flex-shrink-0"
-                    >
-                        <img
-                            src="/hero-tree.png"
-                            alt="Tree"
-                            className="w-[280px] h-auto object-contain drop-shadow-2xl rotate-[-3deg]"
-                        />
-                    </motion.div>
+                {/* Main Lockup: Tree Left | Text Center */}
+                <div className="relative w-full flex flex-col items-center justify-center mb-12 px-2">
+                    {/* Geometric Tree - Absolute Left, centered vertically */}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 z-0">
+                        <GeometricTree />
+                    </div>
 
                     {/* Right: Stacked Text - Massive & Fluid */}
-                    <div className="flex flex-col items-start relative z-10">
-                        <span className="text-xl font-bold tracking-[0.4em] opacity-50 text-[#263238] uppercase mb-1 md:mb-4 ml-2">
-                            НАШ
+                    <div className="flex flex-col items-center relative z-10 ml-[20%]"> {/* Added margin to offset from tree */}
+                        <span className="text-xl font-bold italic tracking-[0.4em] opacity-50 text-[#263238] uppercase mb-1 md:mb-4">
+                            OUR
                         </span>
-                        <h1 className="text-[clamp(6rem,25vw,12rem)] font-normal text-[#0288D1] leading-[0.8] select-none"
-                            style={{ fontFamily: '"Monoton", cursive' }}>
-                            <ScrambleText>20</ScrambleText>
-                        </h1>
-                        <h1 className="text-[clamp(6rem,25vw,12rem)] font-normal text-[#0288D1] leading-[0.8] select-none"
-                            style={{ fontFamily: '"Monoton", cursive' }}>
-                            <ScrambleText>25</ScrambleText>
-                        </h1>
+                        <div className="flex flex-col leading-[0.8] items-center">
+                            <AccentText theme="blue" className="text-[clamp(9rem,35vw,18rem)]">
+                                20
+                            </AccentText>
+                            <AccentText theme="blue" className="text-[clamp(9rem,35vw,18rem)]">
+                                25
+                            </AccentText>
+                        </div>
                     </div>
                 </div>
 
                 <p className="text-lg font-bold tracking-[0.2em] mb-10 opacity-70 text-[#263238] uppercase">
-                    Осталось всего лишь ввести код...
+                    Just enter the code...
                 </p>
 
                 <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6">

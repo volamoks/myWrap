@@ -31,7 +31,7 @@ export default function InteractionHint({ show, onDismiss }) {
                     >
                         <Hand size={24} />
                     </motion.div>
-                    <span className="font-display font-medium text-sm">Нажми на фото!</span>
+                    <span className="font-display font-medium text-sm">Tap the photo!</span>
                 </div>
             </motion.div>
         </AnimatePresence>
