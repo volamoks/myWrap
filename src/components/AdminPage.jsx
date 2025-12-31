@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Save, Copy, FileText, CheckCircle, Smartphone, Lock, AlertCircle, HelpCircle } from 'lucide-react';
-import { compressToEncodedURIComponent } from 'lz-string';
 import { encodeConfig } from '../utils/encoding';
 
 const DEFAULT_JSON = [
@@ -152,11 +151,15 @@ export default function AdminPage() {
 
             if (!encoded) throw new Error("Encoding error");
 
-            const url = `${window.location.origin}/?d=${encoded}`;
-            setGeneratedLink(url);
+            // Robust URL generation that handles subpaths (e.g., GitHub Pages)
+            const url = new URL(window.location.href.split('?')[0]);
+            url.searchParams.set('d', encoded);
+            const finalUrl = url.toString();
+
+            setGeneratedLink(finalUrl);
 
             // Auto copy
-            navigator.clipboard.writeText(url);
+            navigator.clipboard.writeText(finalUrl);
             alert('Link created and copied! 📋');
 
         } catch (err) {

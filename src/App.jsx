@@ -14,11 +14,13 @@ function App() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const dataString = params.get('d');
+    const dataString = params.get('d') || params.get('data');
 
     if (dataString) {
+      console.log("Found data string, decoding...");
       const decoded = decodeConfig(dataString);
       if (decoded) {
+        console.log("Decoded successfully:", decoded);
         // Handle new format { pin, stories } vs old format [stories]
         if (decoded.pin && decoded.stories) {
           setRequiredPin(decoded.pin);
@@ -30,9 +32,11 @@ function App() {
         }
         setMode('viewer');
       } else {
+        console.error("Decoding failed for dataString:", dataString);
         setMode('admin');
       }
     } else {
+      console.log("No data string found in URL, showing admin.");
       setMode('admin');
     }
   }, []);
