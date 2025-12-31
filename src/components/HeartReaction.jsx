@@ -26,7 +26,7 @@ export default function HeartReaction() {
     }, []);
 
     return (
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-[70] flex flex-col items-center">
+        <div className="absolute bottom-12 right-6 md:right-12 z-[70] flex flex-col items-center">
             {/* Flying Hearts Container */}
             <div className="absolute bottom-full mb-4 w-60 h-96 pointer-events-none flex justify-center">
                 <AnimatePresence>
